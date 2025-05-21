@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Http\Controllers\BarangController;
 
 // Arahkan root ke halaman login
 Route::get('/', function () {
@@ -34,7 +35,13 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-//function log out
+// Ambil Data Barang
+Route::get('/barang', [BarangController::class, 'index'])->name('barang.index');
+
+// Detail Barang
+Route::get('/barang/{id}', [BarangController::class, 'show'])->name('barang.show');
+
+// Function log out
 Route::get('/logout', function () {
     Session::forget('user_role');
     return redirect()->route('login');

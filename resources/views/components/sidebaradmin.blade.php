@@ -9,7 +9,7 @@
         </div>
 
         <nav class="flex flex-col text-sm space-y-1 text-black font-semibold">
-            <a href="#" class="flex items-center py-2 px-3 rounded hover:bg-[#293462] hover:text-white transition-colors">
+            <a href="{{ route('dashboard') }}" class="flex items-center py-2 px-3 rounded hover:bg-[#293462] hover:text-white transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
                     <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
                     <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
@@ -18,10 +18,10 @@
             </a>
 
             <p class="text-xs text-gray-700 font-bold uppercase px-3 mt-4 mb-2">Master</p>
-            <a href="#" class="flex items-center py-2 px-3 rounded hover:bg-[#293462] hover:text-white transition-colors">
+            <a href="{{ route('barang.index') }}" class="flex items-center py-2 px-3 rounded hover:bg-[#293462] hover:text-white transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M4 6h16M4 12h16M4 18h16"/>
+                        d="M4 6h16M4 12h16M4 18h16"/>
                 </svg>
                 Data Barang
             </a>
