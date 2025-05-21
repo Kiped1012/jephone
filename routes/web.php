@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\UserController;
 
 // Arahkan root ke halaman login
 Route::get('/', function () {
@@ -38,8 +39,17 @@ Route::get('/dashboard', function () {
 // Ambil Data Barang
 Route::get('/barang', [BarangController::class, 'index'])->name('barang.index');
 
+//Entri Barang
+Route::get('/barang/create', [BarangController::class, 'create'])->name('barang.create');
+
 // Detail Barang
 Route::get('/barang/{id}', [BarangController::class, 'show'])->name('barang.show');
+
+//Store Barang
+Route::post('/barang', [BarangController::class, 'store'])->name('barang.store');
+
+//Ambil Data User
+Route::get('/manajemen-user', [UserController::class, 'index'])->name('user.index');
 
 // Function log out
 Route::get('/logout', function () {

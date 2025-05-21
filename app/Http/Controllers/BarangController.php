@@ -20,7 +20,7 @@ class BarangController extends Controller
         $barangList = include resource_path('data/barang.php');
 
         // Sesuaikan index array: $id 1 berarti index 0
-        $index = $id - 1;
+        $index = (int)$id - 1;
 
         // Cek apakah data dengan index itu ada
         if (!isset($barangList[$index])) {
@@ -34,5 +34,21 @@ class BarangController extends Controller
             'title' => 'Detail Barang'
         ]);
     }
+
+    public function create()
+    {
+       return view('entribarang', [
+        'title' => 'Entri Barang'
+        ]); 
+    }
+
+    public function store(Request $request)
+    {
+        // Simpan data ke file / database (sementara dummy)
+        // dd($request->all());
+
+        return redirect()->route('barang.index')->with('success', 'Barang berhasil ditambahkan!');
+    }
+
 
 }
