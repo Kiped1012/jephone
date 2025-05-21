@@ -6,7 +6,12 @@
     @vite('resources/css/app.css')
 </head>
 <body class="flex bg-gray-100 min-h-screen">
-    <x-sidebar />
+    @if(session('user_role') === 'admin')
+        @include('components.sidebaradmin')
+    @else
+        @include('components.sidebarkasir')
+    @endif
+
     <div class="flex-1 p-6">
         {{ $slot }}
     </div>
