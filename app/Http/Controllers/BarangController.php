@@ -9,7 +9,10 @@ class BarangController extends Controller
     public function index()
     {
         $barang = include resource_path('data/barang.php');
-        return view('databarang', compact('barang'));
+        return view('databarang', [
+            'barang' => $barang,
+            'title' => 'Data Barang'
+        ]);
     }
 
     public function show($id)
@@ -26,7 +29,10 @@ class BarangController extends Controller
 
         $barang = $barangList[$index];
 
-       return view('detailbarang', ['barang' => $barang]);
+       return view('detailbarang', [
+            'barang' => $barang,
+            'title' => 'Detail Barang'
+        ]);
     }
 
 }

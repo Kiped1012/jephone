@@ -5,23 +5,25 @@
     <title>{{ $title ?? 'Dashboard' }}</title>
     @vite('resources/css/app.css')
 </head>
-<body class="flex bg-gray-100 min-h-screen">
+<body class="bg-gray-100">
 
-    {{-- Sidebar tetap tinggi penuh dan logout di bawah --}}
-    @if(session('user_role') === 'admin')
-        <div class="w-64 bg-blue-100 flex flex-col justify-between h-screen">
-            @include('components.sidebaradmin')
+    <div class="flex h-screen overflow-hidden">
+        {{-- Sidebar tetap (sticky) --}}
+        <div class="w-64 bg-blue-100 flex flex-col justify-between h-screen fixed left-0 top-0">
+            @if(session('user_role') === 'admin')
+                @include('components.sidebaradmin')
+            @else
+                @include('components.sidebarkasir')
+            @endif
         </div>
-    @else
-        <div class="w-64 bg-blue-100 flex flex-col justify-between h-screen">
-            @include('components.sidebarkasir')
-        </div>
-    @endif
 
-    {{-- Konten utama scrollable saja --}}
-    <main class="flex-1 overflow-y-auto p-6">
-        @yield('content')
-    </main>
+        {{-- Konten utama geser kanan dan scrollable --}}
+        <div class="flex-1 ml-64 p-6">
+            <div class="min-h-screen">
+                @yield('content')
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
