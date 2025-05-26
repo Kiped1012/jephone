@@ -1,5 +1,17 @@
 @extends('components.layout')
-
+@if (session('success'))
+    <div 
+        x-data="{ show: true }"
+        x-show="show"
+        x-init="setTimeout(() => show = false, 3000)"
+        class="fixed right-4 top-4 z-50 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg shadow-md max-w-sm w-full"
+    >
+        <div class="flex justify-between items-center">
+            <span class="text-sm">{{ session('success') }}</span>
+            <button @click="show = false" class="ml-4 text-green-700 hover:text-green-900 font-bold">&times;</button>
+        </div>
+    </div>
+@endif
 @section('content')
 <div class="flex-1 p-6 bg-[#f4f6f8] min-h-screen">
     <div class="flex flex-col lg:flex-row gap-6">
@@ -23,7 +35,7 @@
                             <th class="px-4 py-3 border">Nama Barang</th>
                             <th class="px-4 py-3 border">Harga</th>
                             <th class="px-4 py-3 border">Jumlah</th>
-                            <th class="px-4 py-3 border">Total Belanja</th>
+                            <th class="px-4 py-3 border">Total</th>
                             <th class="px-4 py-3 border">Aksi</th>
                         </tr>
                     </thead>
@@ -45,7 +57,7 @@
                 </div>
                 <div>
                     <label class="block mb-1 font-medium">Kasir</label>
-                    <input type="text" value="hakim" readonly class="w-full border px-3 py-2 rounded" />
+                    <input type="text" value="{{ session('username') }}" readonly class="w-full border px-3 py-2 rounded" />
                 </div>
                 <div>
                     <label class="block mb-1 font-medium">Total Belanja</label>
@@ -55,14 +67,17 @@
                     <label class="block mb-1 font-medium">Metode Pembayaran</label>
                     <select id="metodePembayaran" name="metode_pembayaran" class="w-full border px-3 py-2 rounded">
                         <option value="" disabled selected>-- Pilih --</option>
-                        <option value="Lunas">Lunas</option>
+                        <option value="Tunai">Tunai</option>
                         <option value="Piutang">Piutang</option>
                     </select>
                 </div>
                 <div id="bayarSection">
                     <div>
                         <label class="block mb-1 font-medium">Di Bayar</label>
-                        <input type="number" id="dibayarInput" class="w-full border px-3 py-2 rounded" />
+                        <div class="flex rounded border overflow-hidden">
+                            <span class="bg-gray-100 px-3 flex items-center text-sm text-gray-600">Rp</span>
+                            <input type="number" id="dibayarInput" class="w-full px-3 py-2 text-sm focus:outline-none" />
+                        </div>
                     </div>
                     <div>
                         <label class="block mb-1 font-medium">Kembalian</label>
@@ -70,9 +85,32 @@
                         <p id="kembalianError" class="text-red-500 text-sm mt-1 hidden">Uang tidak cukup</p>
                     </div>
                 </div>
+                <div id="piutangFields" class="space-y-4 hidden">
+                    <div>
+                        <label class="block mb-1 font-medium">Email Pelanggan</label>
+                        <input type="email" id="emailPelanggan" name="email_pelanggan" class="w-full border px-3 py-2 rounded" placeholder="contoh@email.com" />
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-medium">Jatuh Tempo</label>
+                        <input type="date" id="jatuhTempo" name="jatuh_tempo" readonly class="w-full border px-3 py-2 rounded bg-gray-100" />
+                    </div>
+                </div>
                 <div class="flex justify-between mt-4">
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Bayar</button>
-                    <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Batal</button>
+                    <form action="{{ route('order.store') }}" method="POST" id="form-penjualan">
+                        @csrf
+                        <input type="hidden" name="items" id="inputItems">
+                        <input type="hidden" name="kasir" value="{{ session('username') }}">
+                        <input type="hidden" name="tanggal" value="{{ date('Y-m-d') }}">
+                        <input type="hidden" name="total_belanja" id="inputTotalBelanja">
+                        <input type="hidden" name="metode_pembayaran" id="inputMetode">
+                        <input type="hidden" name="email_pelanggan" id="inputEmail">
+                        <input type="hidden" name="jatuh_tempo" id="inputJatuhTempo">
+
+                        <div class="flex gap-4 mt-4">
+                            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Bayar</button>
+                            <button type="button" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Batal</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -157,181 +195,6 @@
     </div>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const modal = document.getElementById('modal-pilih-barang');
-        const closeBtn = document.getElementById('btn-close-modal');
-        const openBtn = document.getElementById('btn-pilih-barang');
-        const searchInput = document.getElementById('search-barang');
-        const entriesSelect = document.getElementById('entries-select');
-        const tableRows = Array.from(document.querySelectorAll('#barang-table tbody .barang-row'));
-        const tbody = document.getElementById('order-body');
-
-        openBtn.addEventListener('click', () => {
-            // Reset search input
-            searchInput.value = '';
-
-            // Reset entries select ke default (misalnya 5)
-            entriesSelect.value = '10';
-
-            // Tampilkan modal
-            modal.classList.remove('hidden');
-
-            // Terapkan kembali filter awal
-            applySearchAndLimit();
-        });
-
-        closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
-
-        // Fitur search
-        searchInput.addEventListener('input', () => {
-            applySearchAndLimit();
-        });
-
-        entriesSelect.addEventListener('change', () => {
-            applySearchAndLimit();
-        });
-
-        function applySearchAndLimit() {
-            const query = searchInput.value.toLowerCase();
-            const limit = parseInt(entriesSelect.value);
-            let matchCount = 0;
-
-            tableRows.forEach(row => {
-                const match = row.innerText.toLowerCase().includes(query);
-                if (match && matchCount < limit) {
-                    row.style.display = '';
-                    matchCount++;
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        }
-
-        entriesSelect.dispatchEvent(new Event('change'));
-
-        // Pilih barang
-        document.querySelectorAll('.pilih-barang').forEach(button => {
-            button.addEventListener('click', function () {
-                const nama = this.dataset.nama;
-                const harga = parseInt(this.dataset.harga);
-                const jumlah = parseInt(this.closest('tr').querySelector('.jumlah').value);
-                const total = harga * jumlah;
-
-                const newRow = document.createElement('tr');
-                newRow.classList.add('hover:bg-gray-50', 'border-b');
-
-                newRow.innerHTML = `
-                    <td class="px-4 py-2 border"></td>
-                    <td class="px-4 py-2 border">${nama}</td>
-                    <td class="px-4 py-2 border">Rp${harga.toLocaleString()}</td>
-                    <td class="px-4 py-2 border">
-                        <input type="number" value="${jumlah}" class="jumlah-input w-16 border px-2 py-1 rounded" data-harga="${harga}" />
-                    </td>
-                    <td class="px-4 py-2 border total-item">Rp${total.toLocaleString()}</td>
-                    <td class="px-4 py-2 border text-center">
-                        <button class="hapus-barang text-red-500 hover:text-red-700" data-nama="${nama}">🗑️</button>
-                    </td>
-                `;
-
-                tbody.appendChild(newRow);
-                updateTotalBelanja();
-                reorderRows();
-                modal.classList.add('hidden');
-
-                // Disable tombol "Pilih" di modal
-                this.disabled = true;
-                this.classList.add('opacity-50', 'cursor-not-allowed');
-            });
-        });
-
-        // Update total ketika jumlah berubah
-        tbody.addEventListener('input', function (e) {
-            if (e.target.classList.contains('jumlah-input')) {
-                const input = e.target;
-                const harga = parseInt(input.dataset.harga);
-                const jumlah = parseInt(input.value);
-                const total = harga * jumlah;
-
-                const totalCell = input.closest('tr').querySelector('.total-item');
-                totalCell.textContent = `Rp${total.toLocaleString()}`;
-                updateTotalBelanja();
-            }
-        });
-
-        // Hapus barang dari tabel order
-        tbody.addEventListener('click', function (e) {
-            if (e.target.classList.contains('hapus-barang')) {
-                const row = e.target.closest('tr');
-                const nama = e.target.dataset.nama;
-                row.remove();
-                updateTotalBelanja();
-                reorderRows();
-
-                // Re-enable tombol "Pilih" yang sesuai
-                document.querySelectorAll(`.pilih-barang[data-nama="${nama}"]`).forEach(btn => {
-                    btn.disabled = false;
-                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
-                });
-            }
-        });
-
-        const dibayarInput = document.getElementById('dibayarInput');
-        const kembalianOutput = document.getElementById('kembalianOutput');
-        const totalBelanjaInput = document.querySelector('input[name="total_belanja"]');
-        const kembalianError = document.getElementById('kembalianError');
-
-        function hitungKembalian() {
-            const dibayar = parseInt(dibayarInput.value) || 0;
-            const totalBelanja = parseInt(totalBelanjaInput.value.replace(/[^\d]/g, '')) || 0;
-            const kembalian = dibayar - totalBelanja;
-
-            kembalianOutput.value = `Rp${(kembalian >= 0 ? kembalian : 0).toLocaleString()}`;
-            kembalianError.classList.toggle('hidden', kembalian >= 0);
-        }
-
-        dibayarInput.addEventListener('input', hitungKembalian);
-
-        function updateTotalBelanja() {
-            let total = 0;
-            document.querySelectorAll('.total-item').forEach(cell => {
-                const angka = parseInt(cell.textContent.replace(/[^\d]/g, '')) || 0;
-                total += angka;
-        });
-        const totalInput = document.querySelector('input[name="total_belanja"]');
-        if (totalInput) {
-            totalInput.value = `Rp${total.toLocaleString()}`;
-        }
-
-        // Hitung ulang kembalian jika dibayar sudah diisi
-        hitungKembalian();
-        }
-
-
-        function reorderRows() {
-            document.querySelectorAll('#order-body tr').forEach((row, index) => {
-                row.querySelector('td:first-child').textContent = index + 1;
-            });
-        }
-    });
-    
-    document.addEventListener('DOMContentLoaded', function () {
-        const metodeSelect = document.getElementById('metodePembayaran');
-        const bayarSection = document.getElementById('bayarSection');
-
-        function toggleBayarSection() {
-            if (metodeSelect.value === 'Lunas') {
-                bayarSection.style.display = 'block';
-            } else {
-                bayarSection.style.display = 'none';
-            }
-        }
-
-        metodeSelect.addEventListener('change', toggleBayarSection);
-
-        // Panggil saat pertama kali halaman dimuat
-        toggleBayarSection();
-    });
-</script>
+@vite(['resources/js/penjualan.js'])
 
 @endsection

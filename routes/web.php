@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\UserController;
@@ -18,18 +18,24 @@ Route::get('/login', function () {
 
 // Proses form login (cek username/password)
 Route::post('/login', function (Request $request) {
+    $users = include resource_path('data/user.php');
     $username = $request->input('username');
     $password = $request->input('password');
 
-    if ($username === 'Kiped' && $password === '1234') {
-        Session::put('user_role', 'admin');
-        return redirect()->route('dashboard');
-    } elseif ($username === 'Hasby' && $password === '5678') {
-        Session::put('user_role', 'kasir');
-        return redirect()->route('penjualan.index');
-    } else {
-        return redirect()->route('login')->with('error', 'Username atau password salah.');
+    foreach ($users as $user) {
+        if ($user['username'] === $username && $user['password'] === $password) {
+            Session::put('user_role', $user['role']);
+            Session::put('username', $username); // simpan username ke session
+
+            if ($user['role'] === 'Admin') {
+                return redirect()->route('dashboard');
+            } elseif ($user['role'] === 'Kasir') {
+                return redirect()->route('penjualan.index');
+            }
+        }
     }
+
+    return redirect()->route('login')->with('error', 'Username atau password salah.');
 })->name('login.submit');
 
 // Halaman dashboard setelah login berhasil
@@ -46,14 +52,20 @@ Route::get('/barang/create', [BarangController::class, 'create'])->name('barang.
 // Detail Barang
 Route::get('/barang/{id}', [BarangController::class, 'show'])->name('barang.show');
 
-//Store Barang
+// Store Barang
 Route::post('/barang', [BarangController::class, 'store'])->name('barang.store');
 
-//Ambil Data User
+// Ambil Data User
 Route::get('/manajemen-user', [UserController::class, 'index'])->name('user.index');
 
 // Halaman Penjualan (Kasir)
 Route::get('/penjualan', [OrderController::class, 'create'])->name('penjualan.index');
+
+// Simpan Data Penjualan (Kasir)
+Route::post('/penjualan', [OrderController::class, 'store'])->name('order.store');
+
+// Histori Penjualan
+Route::get('/histori-penjualan', [OrderController::class, 'history'])->name('penjualan.histori');
 
 // Function log out
 Route::get('/logout', function () {
