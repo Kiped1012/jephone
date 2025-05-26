@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderController;
 
 // Arahkan root ke halaman login
 Route::get('/', function () {
@@ -50,6 +51,9 @@ Route::post('/barang', [BarangController::class, 'store'])->name('barang.store')
 
 //Ambil Data User
 Route::get('/manajemen-user', [UserController::class, 'index'])->name('user.index');
+
+// Halaman Penjualan (Kasir)
+Route::get('/penjualan', [OrderController::class, 'create'])->name('penjualan.index');
 
 // Function log out
 Route::get('/logout', function () {
