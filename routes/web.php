@@ -26,7 +26,7 @@ Route::post('/login', function (Request $request) {
         return redirect()->route('dashboard');
     } elseif ($username === 'Hasby' && $password === '5678') {
         Session::put('user_role', 'kasir');
-        return redirect()->route('dashboard');
+        return redirect()->route('penjualan.index');
     } else {
         return redirect()->route('login')->with('error', 'Username atau password salah.');
     }

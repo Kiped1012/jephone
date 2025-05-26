@@ -21,7 +21,6 @@
                         <tr>
                             <th class="px-4 py-3 border">No</th>
                             <th class="px-4 py-3 border">Nama Barang</th>
-                            <th class="px-4 py-3 border">Satuan</th>
                             <th class="px-4 py-3 border">Harga</th>
                             <th class="px-4 py-3 border">Jumlah</th>
                             <th class="px-4 py-3 border">Total Belanja</th>
@@ -41,24 +40,35 @@
 
             <div class="space-y-4 text-sm">
                 <div>
-                    <label class="block mb-1 font-medium">Tanggal Transaksi*</label>
+                    <label class="block mb-1 font-medium">Tanggal Transaksi</label>
                     <input type="date" value="{{ date('Y-m-d') }}" class="w-full border px-3 py-2 rounded" />
                 </div>
                 <div>
-                    <label class="block mb-1 font-medium">Kasir*</label>
+                    <label class="block mb-1 font-medium">Kasir</label>
                     <input type="text" value="hakim" readonly class="w-full border px-3 py-2 rounded" />
                 </div>
                 <div>
-                    <label class="block mb-1 font-medium">Total Belanja*</label>
-                    <input type="number" name="total_belanja" readonly value="Rp. 0" class="w-full border px-3 py-2 rounded bg-gray-100" />
+                    <label class="block mb-1 font-medium">Total Belanja</label>
+                    <input type="text" id="totalBelanjaDisplay" name="total_belanja" readonly value="Rp0" class="w-full border px-3 py-2 rounded bg-gray-100 font-semibold text-left" />
                 </div>
                 <div>
-                    <label class="block mb-1 font-medium">Di Bayar*</label>
-                    <input type="number" class="w-full border px-3 py-2 rounded" />
+                    <label class="block mb-1 font-medium">Metode Pembayaran</label>
+                    <select id="metodePembayaran" name="metode_pembayaran" class="w-full border px-3 py-2 rounded">
+                        <option value="" disabled selected>-- Pilih --</option>
+                        <option value="Lunas">Lunas</option>
+                        <option value="Piutang">Piutang</option>
+                    </select>
                 </div>
-                <div>
-                    <label class="block mb-1 font-medium">Kembalian*</label>
-                    <input type="text" readonly class="w-full border px-3 py-2 rounded bg-gray-100" />
+                <div id="bayarSection">
+                    <div>
+                        <label class="block mb-1 font-medium">Di Bayar</label>
+                        <input type="number" id="dibayarInput" class="w-full border px-3 py-2 rounded" />
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-medium">Kembalian</label>
+                        <input type="text" id="kembalianOutput" readonly class="w-full border px-3 py-2 rounded bg-gray-100 font-semibold" />
+                        <p id="kembalianError" class="text-red-500 text-sm mt-1 hidden">Uang tidak cukup</p>
+                    </div>
                 </div>
                 <div class="flex justify-between mt-4">
                     <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Bayar</button>
@@ -214,7 +224,6 @@
                 newRow.innerHTML = `
                     <td class="px-4 py-2 border"></td>
                     <td class="px-4 py-2 border">${nama}</td>
-                    <td class="px-4 py-2 border">pcs</td>
                     <td class="px-4 py-2 border">Rp${harga.toLocaleString()}</td>
                     <td class="px-4 py-2 border">
                         <input type="number" value="${jumlah}" class="jumlah-input w-16 border px-2 py-1 rounded" data-harga="${harga}" />
@@ -267,23 +276,61 @@
             }
         });
 
+        const dibayarInput = document.getElementById('dibayarInput');
+        const kembalianOutput = document.getElementById('kembalianOutput');
+        const totalBelanjaInput = document.querySelector('input[name="total_belanja"]');
+        const kembalianError = document.getElementById('kembalianError');
+
+        function hitungKembalian() {
+            const dibayar = parseInt(dibayarInput.value) || 0;
+            const totalBelanja = parseInt(totalBelanjaInput.value.replace(/[^\d]/g, '')) || 0;
+            const kembalian = dibayar - totalBelanja;
+
+            kembalianOutput.value = `Rp${(kembalian >= 0 ? kembalian : 0).toLocaleString()}`;
+            kembalianError.classList.toggle('hidden', kembalian >= 0);
+        }
+
+        dibayarInput.addEventListener('input', hitungKembalian);
+
         function updateTotalBelanja() {
             let total = 0;
             document.querySelectorAll('.total-item').forEach(cell => {
                 const angka = parseInt(cell.textContent.replace(/[^\d]/g, '')) || 0;
                 total += angka;
-            });
-            const totalInput = document.querySelector('input[name="total_belanja"]');
-            if (totalInput) {
-                totalInput.value = `Rp${total.toLocaleString()}`;
-            }
+        });
+        const totalInput = document.querySelector('input[name="total_belanja"]');
+        if (totalInput) {
+            totalInput.value = `Rp${total.toLocaleString()}`;
         }
+
+        // Hitung ulang kembalian jika dibayar sudah diisi
+        hitungKembalian();
+        }
+
 
         function reorderRows() {
             document.querySelectorAll('#order-body tr').forEach((row, index) => {
                 row.querySelector('td:first-child').textContent = index + 1;
             });
         }
+    });
+    
+    document.addEventListener('DOMContentLoaded', function () {
+        const metodeSelect = document.getElementById('metodePembayaran');
+        const bayarSection = document.getElementById('bayarSection');
+
+        function toggleBayarSection() {
+            if (metodeSelect.value === 'Lunas') {
+                bayarSection.style.display = 'block';
+            } else {
+                bayarSection.style.display = 'none';
+            }
+        }
+
+        metodeSelect.addEventListener('change', toggleBayarSection);
+
+        // Panggil saat pertama kali halaman dimuat
+        toggleBayarSection();
     });
 </script>
 
