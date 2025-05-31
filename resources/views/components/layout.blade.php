@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <script src="//unpkg.com/alpinejs" defer></script>
+    <script src="https://unpkg.com/alpinejs" defer></script>
     <title>{{ $title ?? 'Dashboard' }}</title>
     @vite('resources/css/app.css')
 </head>

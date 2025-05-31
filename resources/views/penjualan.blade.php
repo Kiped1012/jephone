@@ -12,6 +12,19 @@
         </div>
     </div>
 @endif
+<!-- Notifikasi Error dari Alpine -->
+<div 
+    x-data="{ show: false, message: '' }"
+    x-show="show"
+    x-on:show-error.window="message = $event.detail; show = true; setTimeout(() => show = false, 3000)"
+    class="fixed right-4 top-4 z-50 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg shadow-md max-w-sm w-full"
+    x-cloak
+>
+    <div class="flex justify-between items-center">
+        <span class="text-sm" x-text="message"></span>
+        <button @click="show = false" class="ml-4 text-red-700 hover:text-red-900 font-bold">&times;</button>
+    </div>
+</div>
 @section('content')
 <div class="flex-1 p-6 bg-[#f4f6f8] min-h-screen">
     <div class="flex flex-col lg:flex-row gap-6">
@@ -76,12 +89,12 @@
                         <label class="block mb-1 font-medium">Di Bayar</label>
                         <div class="flex rounded border overflow-hidden">
                             <span class="bg-gray-100 px-3 flex items-center text-sm text-gray-600">Rp</span>
-                            <input type="number" id="dibayarInput" class="w-full px-3 py-2 text-sm focus:outline-none" />
+                            <input type="number" id="dibayarInput" name="dibayar_input" class="w-full px-3 py-2 text-sm focus:outline-none" />
                         </div>
                     </div>
                     <div>
                         <label class="block mb-1 font-medium">Kembalian</label>
-                        <input type="text" id="kembalianOutput" readonly class="w-full border px-3 py-2 rounded bg-gray-100 font-semibold" />
+                        <input type="text" id="kembalianOutput" name="kembalian_output" readonly class="w-full border px-3 py-2 rounded bg-gray-100 font-semibold" />
                         <p id="kembalianError" class="text-red-500 text-sm mt-1 hidden">Uang tidak cukup</p>
                     </div>
                 </div>
@@ -103,6 +116,8 @@
                         <input type="hidden" name="tanggal" value="{{ date('Y-m-d') }}">
                         <input type="hidden" name="total_belanja" id="inputTotalBelanja">
                         <input type="hidden" name="metode_pembayaran" id="inputMetode">
+                        <input type="hidden" name="dibayar_input" id="inputDibayar">
+                        <input type="hidden" name="kembalian_output" id="inputKembalian">
                         <input type="hidden" name="email_pelanggan" id="inputEmail">
                         <input type="hidden" name="jatuh_tempo" id="inputJatuhTempo">
 

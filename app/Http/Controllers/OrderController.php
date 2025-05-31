@@ -46,11 +46,13 @@ class OrderController extends Controller
         $penjualan = file_exists($penjualanPath) ? include $penjualanPath : [];
 
         $penjualan[] = [
-            'id' => uniqid('trx_'),
+            'id' => strtoupper(uniqid('TRX_')),
             'tanggal' => $request->input('tanggal'),
             'kasir' => $request->input('kasir'),
             'total_belanja' => (int) $request->input('total_belanja'),
             'metode_pembayaran' => $request->input('metode_pembayaran'),
+            'dibayar_input' => $request->input('dibayar_input'),
+            'kembalian_output' => $request->input('kembalian_output'),
             'email_pelanggan' => $request->input('email_pelanggan'),
             'jatuh_tempo' => $request->input('jatuh_tempo'),
             'items' => $items,

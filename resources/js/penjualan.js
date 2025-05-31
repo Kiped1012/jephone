@@ -3,6 +3,31 @@
 
     document.getElementById('form-penjualan').addEventListener('submit', function (e) {
     const rows = document.querySelectorAll('#order-body tr');
+    const metode = document.getElementById('metodePembayaran').value;
+    const dibayar = document.getElementById('dibayarInput').value;
+    const email = document.getElementById('emailPelanggan').value;
+
+    let showError = false;
+
+    if (rows.length === 0) {
+        showError = true;
+    } else if (!metode) {
+        showError = true;
+    } else if (metode === 'Tunai' && (!dibayar || parseInt(dibayar) <= 0)) {
+        showError = true;
+    } else if (metode === 'Piutang' && (!email || email.trim() === '')) {
+        showError = true;
+    }
+
+    if (showError) {
+        e.preventDefault(); // Cegah submit form
+        window.dispatchEvent(new CustomEvent('show-error', {
+            detail: "Lengkapi Data Terlebih Dahulu!"
+        }));
+        return;
+    }
+
+    // Simpan data
     const items = [];
 
     rows.forEach(row => {
@@ -16,10 +41,13 @@
 
     document.getElementById('inputItems').value = JSON.stringify(items);
     totalBelanjaInput.value = totalBelanjaDisplay.value.replace(/[^\d]/g, '');
-    document.getElementById('inputMetode').value = document.getElementById('metodePembayaran').value;
-    document.getElementById('inputEmail').value = document.getElementById('emailPelanggan').value;
+    document.getElementById('inputMetode').value = metode;
+    document.getElementById('inputDibayar').value = dibayar;
+    document.getElementById('inputKembalian').value = document.getElementById('kembalianOutput').value;
+    document.getElementById('inputEmail').value = email;
     document.getElementById('inputJatuhTempo').value = document.getElementById('jatuhTempo').value;
-    });
+});
+
 
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -90,7 +118,7 @@
                     <td class="px-4 py-2 border">${nama}</td>
                     <td class="px-4 py-2 border">Rp${harga.toLocaleString()}</td>
                     <td class="px-4 py-2 border">
-                        <input type="number" value="${jumlah}" class="jumlah-input w-16 border px-2 py-1 rounded" data-harga="${harga}" />
+                        <input type="number" min="1" value="${jumlah}" class="jumlah-input w-16 border px-2 py-1 rounded" data-harga="${harga}" />
                     </td>
                     <td class="px-4 py-2 border total-item">Rp${total.toLocaleString()}</td>
                     <td class="px-4 py-2 border text-center">
