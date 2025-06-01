@@ -154,4 +154,26 @@ return array (
       ),
     ),
   ),
+  6 => 
+  array (
+    'id' => 'TRX_683C71BB4C1CD',
+    'tanggal' => '2025-06-01',
+    'kasir' => 'Hasby',
+    'total_belanja' => 20000,
+    'metode_pembayaran' => 'Piutang',
+    'dibayar_input' => NULL,
+    'kembalian_output' => 'Rp0',
+    'email_pelanggan' => 'andiadinata@gmail.com',
+    'jatuh_tempo' => '2025-07-01',
+    'items' => 
+    array (
+      0 => 
+      array (
+        'nama' => 'Transistor BC547',
+        'harga' => 400,
+        'jumlah' => 50,
+        'total' => 20000,
+      ),
+    ),
+  ),
 );

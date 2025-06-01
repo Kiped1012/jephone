@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PelunasanController;
 
 // Arahkan root ke halaman login
 Route::get('/', function () {
@@ -66,6 +67,17 @@ Route::post('/penjualan', [OrderController::class, 'store'])->name('order.store'
 
 // Histori Penjualan
 Route::get('/histori-penjualan', [OrderController::class, 'history'])->name('penjualan.histori');
+
+// Halaman Pelunasan
+Route::get('/pelunasan', [PelunasanController::class, 'index'])->name('pelunasan.index');
+
+// Ambil data transaksi piutang berdasarkan ID (untuk modal pelunasan)
+Route::get('/pelunasan/get-transaksi', [PelunasanController::class, 'getTransaksiById'])->name('pelunasan.getTransaksi');
+
+// Form Pelunasan
+Route::post('/pelunasan', [PelunasanController::class, 'store'])->name('pelunasan.store');
+
+Route::get('/data/pelunasan', [PelunasanController::class, 'getPelunasan']);
 
 // Function log out
 Route::get('/logout', function () {

@@ -1,0 +1,13 @@
+<?php return array (
+  0 => 
+  array (
+    'id_transaksi' => 'TRX_683ABD71521EA',
+    'email' => 'kaedeharakazuha@gmail.com',
+    'tanggal_piutang' => '2025-05-31',
+    'jatuh_tempo_piutang' => '2025-06-30',
+    'total_piutang' => '42000',
+    'tanggal_pelunasan' => '2025-06-01',
+    'dibayar' => '48000',
+    'kembalian' => '6000',
+  ),
+);

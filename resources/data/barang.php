@@ -23,7 +23,7 @@ return array (
   array (
     'nama' => 'Transistor BC547',
     'kategori' => 'Komponen',
-    'stok' => 1450,
+    'stok' => 1400,
     'harga_beli' => 250,
     'harga_jual' => 400,
     'supplier' => 'Onsemi',
