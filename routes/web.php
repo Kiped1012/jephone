@@ -62,6 +62,10 @@ Route::post('/masterdata/barang', [MasterDataController::class, 'storeBarang'])-
 Route::post('/masterdata/kategori', [MasterDataController::class, 'storeKategori'])->name('masterdata.kategori.store');
 Route::post('/masterdata/suppliers', [MasterDataController::class, 'storeSupplier'])->name('masterdata.suppliers.store');
 
+Route::post('/masterdata/barang/delete', [MasterDataController::class, 'deleteBarang'])->name('masterdata.barang.delete');
+Route::post('/masterdata/kategori/delete', [MasterDataController::class, 'deleteKategori'])->name('masterdata.kategori.delete');
+Route::post('/masterdata/suppliers/delete', [MasterDataController::class, 'deleteSupplier'])->name('masterdata.suppliers.delete');
+
 // Detail Barang
 Route::get('/barang/{id}', [BarangController::class, 'show'])->name('barang.show');
 

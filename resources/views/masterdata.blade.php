@@ -11,6 +11,17 @@
         <button @click="show = false" class="ml-4 text-red-700 hover:text-red-900 font-bold">&times;</button>
     </div>
 </div>
+{{-- Notifikasi sukses --}}
+<div x-data="{ show: false, message: '' }"
+    x-show="show"
+    x-on:show-success.window="message = $event.detail; show = true; setTimeout(() => show = false, 3000)"
+    class="fixed right-4 top-4 z-50 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg shadow-md max-w-sm w-full"
+    x-cloak>
+    <div class="flex justify-between items-center">
+        <span class="text-sm" x-text="message"></span>
+        <button @click="show = false" class="ml-4 text-green-700 hover:text-green-900 font-bold">&times;</button>
+    </div>
+</div>
 
 @section('content')
 <div class="flex-1 p-6 bg-[#f4f6f8] min-h-screen space-y-6">
@@ -34,6 +45,7 @@
                         <th class="px-4 py-2 border">Nama Barang</th>
                         <th class="px-4 py-2 border">Kategori</th>
                         <th class="px-4 py-2 border">Supplier</th>
+                        <th class="px-4 py-2 border">Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="barangTable">
@@ -59,6 +71,7 @@
                 <thead class="bg-gray-100 text-gray-700">
                     <tr>
                         <th class="px-4 py-2 border">Nama Kategori</th>
+                        <th class="px-4 py-2 border">Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="kategoriTable">
@@ -84,6 +97,7 @@
                 <thead class="bg-gray-100 text-gray-700">
                     <tr>
                         <th class="px-4 py-2 border">Nama Supplier</th>
+                        <th class="px-4 py-2 border">Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="supplierTable">

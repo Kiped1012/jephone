@@ -71,4 +71,28 @@ class MasterDataController extends Controller
         $export = var_export($array, true);
         File::put(base_path($path), "<?php\n\nreturn " . $export . ";");
     }
+    
+    public function deleteBarang(Request $request)
+    {
+        $data = include base_path($this->pathBarang);
+        $data = array_filter($data, fn($item) => $item['id_brg'] !== $request->id);
+        $this->writeData($this->pathBarang, array_values($data));
+        return response()->json(['success' => true]);
+    }
+
+    public function deleteKategori(Request $request)
+    {
+        $data = include base_path($this->pathKategori);
+        $data = array_filter($data, fn($item) => $item !== $request->nama);
+        $this->writeData($this->pathKategori, array_values($data));
+        return response()->json(['success' => true]);
+    }
+
+    public function deleteSupplier(Request $request)
+    {
+        $data = include base_path($this->pathSupplier);
+        $data = array_filter($data, fn($item) => $item !== $request->nama);
+        $this->writeData($this->pathSupplier, array_values($data));
+        return response()->json(['success' => true]);
+    }
 }

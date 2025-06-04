@@ -50,7 +50,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 detail: 'Nama kategori tidak boleh kosong.'
             }));
         }
-
+        
+        // Validasi jika kategori sudah ada
+        if (kategoriData.includes(nama)) {
+            return window.dispatchEvent(new CustomEvent('show-error', {
+                detail: 'Kategori sudah ada.'
+            }));
+        }
 
         fetch('/masterdata/kategori', {
             method: 'POST',
@@ -74,9 +80,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const tbody = document.getElementById('kategoriTable');
         tbody.innerHTML = '';
         kategoriData.forEach(nama => {
-            const row = document.createElement('tr');
-            row.innerHTML = `<td class="border px-4 py-2">${nama}</td>`;
-            tbody.appendChild(row);
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="px-4 py-2 border">${nama}</td>
+                <td class="px-4 py-2 border text-center">
+                    <button onclick="hapusKategori('${nama}')" class="text-red-600 hover:underline text-xs">Hapus</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
         });
     }
 
@@ -86,6 +97,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (nama === '') {
             return window.dispatchEvent(new CustomEvent('show-error', {
                 detail: 'Nama supplier tidak boleh kosong.'
+            }));
+        }
+            // Validasi jika kategori sudah ada
+        if (supplierData.includes(nama)) {
+            return window.dispatchEvent(new CustomEvent('show-error', {
+                detail: 'Supplier sudah ada.'
             }));
         }
         fetch('/masterdata/suppliers', {
@@ -110,9 +127,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const tbody = document.getElementById('supplierTable');
         tbody.innerHTML = '';
         supplierData.forEach(nama => {
-            const row = document.createElement('tr');
-            row.innerHTML = `<td class="border px-4 py-2">${nama}</td>`;
-            tbody.appendChild(row);
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="px-4 py-2 border">${nama}</td>
+                <td class="px-4 py-2 border text-center">
+                    <button onclick="hapusSupplier('${nama}')" class="text-red-600 hover:underline text-xs">Hapus</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
         });
     }
 
@@ -138,8 +160,8 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(res => res.json())
         .then(() => {
-            const id = barangData.length + 1;
-            barangData.push({ id, nama, kategori, supplier });
+            const id_brg = barangData.length + 1;
+            barangData.push({ id_brg, nama, kategori, supplier });
             updateBarangTable();
             document.getElementById('namaBarang').value = '';
             document.getElementById('formBarang').classList.add('hidden');
@@ -150,14 +172,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const tbody = document.getElementById('barangTable');
         tbody.innerHTML = '';
         barangData.forEach((item, index) => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td class="border px-4 py-2">${item.id_brg || 'BRG-' + (index + 1)}</td>
-                <td class="border px-4 py-2">${item.nama}</td>
-                <td class="border px-4 py-2">${item.kategori}</td>
-                <td class="border px-4 py-2">${item.supplier}</td>
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="px-4 py-2 border">${item.id_brg}</td>
+                <td class="px-4 py-2 border">${item.nama}</td>
+                <td class="px-4 py-2 border">${item.kategori}</td>
+                <td class="px-4 py-2 border">${item.supplier}</td>
+                <td class="px-4 py-2 border text-center">
+                    <button onclick="hapusBarang('${item.id_brg}')" class="text-red-600 hover:underline text-xs">Hapus</button>
+                </td>
             `;
-            tbody.appendChild(row);
+            tbody.appendChild(tr);
         });
     }
 
@@ -182,4 +207,74 @@ document.addEventListener('DOMContentLoaded', () => {
             supplierSelect.appendChild(opt);
         });
     }
+
+// Hapus fungsi
+window.hapusBarang = function(id){
+    if (!confirm('Yakin ingin menghapus barang ini?')) return;
+    fetch('/masterdata/barang/delete', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken,
+        },
+        body: JSON.stringify({ id })
+    })
+    .then(res => res.json())
+    .then(() => {
+        barangData = barangData.filter(b => b.id_brg !== id);
+        updateBarangTable();
+        showSuccess('Barang berhasil dihapus.');
+    })
+    .catch(() => showError('Gagal menghapus barang.'));
+}
+
+window.hapusKategori = function(nama) {
+    if (!confirm('Yakin ingin menghapus kategori ini?')) return;
+    fetch('/masterdata/kategori/delete', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken,
+        },
+        body: JSON.stringify({ nama })
+    })
+    .then(res => res.json())
+    .then(() => {
+        kategoriData = kategoriData.filter(k => k !== nama);
+        updateKategoriTable();
+        renderSelectOptions();
+        showSuccess('Kategori berhasil dihapus.');
+    })
+    .catch(() => showError('Gagal menghapus kategori.'));
+}
+
+window.hapusSupplier = function(nama) {
+    if (!confirm('Yakin ingin menghapus supplier ini?')) return;
+    fetch('/masterdata/suppliers/delete', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken,
+        },
+        body: JSON.stringify({ nama })
+    })
+    .then(res => res.json())
+    .then(() => {
+        supplierData = supplierData.filter(s => s !== nama);
+        updateSupplierTable();
+        renderSelectOptions();
+        showSuccess('Supplier berhasil dihapus.');
+    })
+    .catch(() => showError('Gagal menghapus supplier.'));
+}
+
+// Notifikasi
+function showError(msg) {
+    window.dispatchEvent(new CustomEvent('show-error', { detail: msg }));
+}
+function showSuccess(msg) {
+    window.dispatchEvent(new CustomEvent('show-success', { detail: msg }));
+}
+
+
 });
