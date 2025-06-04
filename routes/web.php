@@ -6,6 +6,7 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PelunasanController;
+use App\Http\Controllers\MasterDataController;
 
 // Arahkan root ke halaman login
 Route::get('/', function () {
@@ -47,8 +48,19 @@ Route::get('/dashboard', function () {
 // Ambil Data Barang
 Route::get('/barang', [BarangController::class, 'index'])->name('barang.index');
 
-//Entri Barang
+// Entri Barang
 Route::get('/barang/create', [BarangController::class, 'create'])->name('barang.create');
+
+// Master Data
+Route::get('/masterdata', [MasterDataController::class, 'index'])->name('masterdata');
+
+Route::get('/masterdata/barang', [MasterDataController::class, 'getBarang'])->name('masterdata.barang.get');
+Route::get('/masterdata/kategori', [MasterDataController::class, 'getKategori'])->name('masterdata.kategori.get');
+Route::get('/masterdata/suppliers', [MasterDataController::class, 'getSuppliers'])->name('masterdata.suppliers.get');
+
+Route::post('/masterdata/barang', [MasterDataController::class, 'storeBarang'])->name('masterdata.barang.store');
+Route::post('/masterdata/kategori', [MasterDataController::class, 'storeKategori'])->name('masterdata.kategori.store');
+Route::post('/masterdata/suppliers', [MasterDataController::class, 'storeSupplier'])->name('masterdata.suppliers.store');
 
 // Detail Barang
 Route::get('/barang/{id}', [BarangController::class, 'show'])->name('barang.show');

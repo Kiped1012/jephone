@@ -3,6 +3,7 @@
 return array (
   0 => 
   array (
+    'id_brg' => 'BRG_A9F2',
     'nama' => 'Resistor 10KΩ',
     'kategori' => 'Komponen',
     'stok' => 4950,
@@ -12,6 +13,7 @@ return array (
   ),
   1 => 
   array (
+    'id_brg' => 'BRG_5D7B',
     'nama' => 'Kapasitor 100uF',
     'kategori' => 'Komponen',
     'stok' => 2950,
@@ -21,6 +23,7 @@ return array (
   ),
   2 => 
   array (
+    'id_brg' => 'BRG_E21C',
     'nama' => 'Transistor BC547',
     'kategori' => 'Komponen',
     'stok' => 1400,
@@ -30,6 +33,7 @@ return array (
   ),
   3 => 
   array (
+    'id_brg' => 'BRG_B41E',
     'nama' => 'IC 555 Timer',
     'kategori' => 'IC',
     'stok' => 790,
@@ -39,6 +43,7 @@ return array (
   ),
   4 => 
   array (
+    'id_brg' => 'BRG_89D3',
     'nama' => 'LED Merah 5mm',
     'kategori' => 'Komponen',
     'stok' => 9980,
@@ -48,15 +53,17 @@ return array (
   ),
   5 => 
   array (
+    'id_brg' => 'BRG_C6E1',
     'nama' => 'Crystal 16MHz',
     'kategori' => 'Komponen',
-    'stok' => 900,
+    'stok' => 890,
     'harga_beli' => 300,
     'harga_jual' => 450,
     'supplier' => 'ABRACON',
   ),
   6 => 
   array (
+    'id_brg' => 'BRG_1A3F',
     'nama' => 'IC Regulator 7805',
     'kategori' => 'IC',
     'stok' => 670,
@@ -66,6 +73,7 @@ return array (
   ),
   7 => 
   array (
+    'id_brg' => 'BRG_7E4B',
     'nama' => 'Switch Tactile',
     'kategori' => 'Komponen',
     'stok' => 1980,
@@ -75,6 +83,7 @@ return array (
   ),
   8 => 
   array (
+    'id_brg' => 'BRG_F58A',
     'nama' => 'Konektor USB Female',
     'kategori' => 'Konektor',
     'stok' => 1130,
@@ -84,6 +93,7 @@ return array (
   ),
   9 => 
   array (
+    'id_brg' => 'BRG_3C2D',
     'nama' => 'Diode 1N4007',
     'kategori' => 'Komponen',
     'stok' => 3455,

@@ -5,8 +5,8 @@
     <div class="bg-white rounded-xl shadow overflow-hidden">
         <div class="bg-[#234e9a] px-6 py-4 flex justify-between items-center text-white">
             <div>
-                <h1 class="text-lg font-semibold">📦 Data Barang</h1>
-                <p class="text-sm opacity-80">Master / Data Barang</p>
+                <h1 class="text-lg font-semibold">📦 Daftar Barang</h1>
+                <p class="text-sm opacity-80">Master / Daftar Barang</p>
             </div>
             <a href="{{ route('barang.create') }}">
                 <button class="bg-white text-[#234e9a] font-medium px-4 py-2 text-sm rounded hover:bg-gray-100">
@@ -72,4 +72,5 @@
         </div>
     </div>
 </div>
+@vite(['resources/js/databarang.js'])
 @endsection

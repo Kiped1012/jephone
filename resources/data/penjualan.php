@@ -176,4 +176,26 @@ return array (
       ),
     ),
   ),
+  7 => 
+  array (
+    'id' => 'TRX_684058ABD174D',
+    'tanggal' => '2025-06-04',
+    'kasir' => 'Hasby',
+    'total_belanja' => 4500,
+    'metode_pembayaran' => 'Piutang',
+    'dibayar_input' => NULL,
+    'kembalian_output' => 'Rp0',
+    'email_pelanggan' => 'chloepawapua@gmail.com',
+    'jatuh_tempo' => '2025-07-04',
+    'items' => 
+    array (
+      0 => 
+      array (
+        'nama' => 'Crystal 16MHz',
+        'harga' => 450,
+        'jumlah' => 10,
+        'total' => 4500,
+      ),
+    ),
+  ),
 );

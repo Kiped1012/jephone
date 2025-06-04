@@ -11,7 +11,7 @@ class BarangController extends Controller
         $barang = include resource_path('data/barang.php');
         return view('databarang', [
             'barang' => $barang,
-            'title' => 'Data Barang'
+            'title' => 'Daftar Barang'
         ]);
     }
 

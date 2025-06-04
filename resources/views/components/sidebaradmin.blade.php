@@ -23,13 +23,13 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M4 6h16M4 12h16M4 18h16"/>
                 </svg>
-                Data Barang
+                Daftar Barang
             </a>
-            <a href="#" class="flex items-center py-2 px-3 rounded hover:bg-[#293462] hover:text-white transition-colors">
+            <a href="{{ route('masterdata') }}" class="flex items-center py-2 px-3 rounded hover:bg-[#293462] hover:text-white transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24" stroke="none">
                     <path fill-rule="evenodd" d="M5.25 2.25a3 3 0 0 0-3 3v4.318a3 3 0 0 0 .879 2.121l9.58 9.581c.92.92 2.39 1.186 3.548.428a18.849 18.849 0 0 0 5.441-5.44c.758-1.16.492-2.629-.428-3.548l-9.58-9.581a3 3 0 0 0-2.122-.879H5.25ZM6.375 7.5a1.125 1.125 0 1 0 0-2.25 1.125 1.125 0 0 0 0 2.25Z" clip-rule="evenodd" />
                 </svg>
-                Data Kategori
+                Data Barang
             </a>
 
             <p class="text-xs text-gray-700 font-bold uppercase px-3 mt-4 mb-2">Transaksi</p>
