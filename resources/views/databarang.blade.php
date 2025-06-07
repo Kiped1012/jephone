@@ -1,5 +1,16 @@
 @extends('components.layout')
-
+@if (session('success'))
+    <div x-data="{ show: true }"
+        x-show="show"
+        x-init="setTimeout(() => show = false, 3000)"
+        class="fixed right-4 top-4 z-50 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg shadow-md max-w-sm w-full"
+        x-cloak>
+        <div class="flex justify-between items-center">
+            <span class="text-sm">{{ session('success') }}</span>
+            <button @click="show = false" class="ml-4 text-green-700 hover:text-green-900 font-bold">&times;</button>
+        </div>
+    </div>
+@endif
 @section('content')
 <div class="flex-1 p-6 bg-[#f4f6f8] min-h-screen">
     <div class="bg-white rounded-xl shadow overflow-hidden">
@@ -68,6 +79,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                <div id="pagination" class="flex justify-end items-center space-x-2 mt-4"></div>
             </div>
         </div>
     </div>

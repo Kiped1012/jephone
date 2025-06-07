@@ -1,6 +1,4 @@
-<?php
-
-return array (
+<?php return array (
   0 => 
   array (
     'id_brg' => 'BRG_A9F2',
@@ -100,5 +98,15 @@ return array (
     'harga_beli' => 100,
     'harga_jual' => 200,
     'supplier' => 'Vishay',
+  ),
+  10 => 
+  array (
+    'id_brg' => 'BRG_4E55',
+    'nama' => 'Mobile Cable DLC5531CW/70',
+    'kategori' => 'Kabel',
+    'stok' => '500',
+    'harga_beli' => '400',
+    'harga_jual' => '600',
+    'supplier' => 'Sony',
   ),
 );

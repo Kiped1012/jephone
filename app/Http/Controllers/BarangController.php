@@ -44,11 +44,36 @@ class BarangController extends Controller
 
     public function store(Request $request)
     {
-        // Simpan data ke file / database (sementara dummy)
-        // dd($request->all());
+        $validated = $request->validate([
+            'id_brg' => 'required|string',
+            'nama' => 'required|string',
+            'kategori' => 'required|string',
+            'supplier' => 'required|string',
+            'stok' => 'required|integer|min:0',
+            'harga_beli' => 'required|integer|min:0',
+            'harga_jual' => 'required|integer|min:0',
+        ]);
 
-        return redirect()->route('barang.index')->with('success', 'Barang berhasil ditambahkan!');
+        $barangBaru = [
+            'id_brg' => $validated['id_brg'],
+            'nama' => $validated['nama'],
+            'kategori' => $validated['kategori'],
+            'stok' => $validated['stok'],
+            'harga_beli' => $validated['harga_beli'],
+            'harga_jual' => $validated['harga_jual'],
+            'supplier' => $validated['supplier'],
+        ];
+
+        $filePath = resource_path('data/barang.php');
+        $data = include($filePath);
+
+        $data[] = $barangBaru;
+
+        file_put_contents($filePath, '<?php return ' . var_export($data, true) . ';');
+
+        return redirect()->route('barang.index')->with('success', 'Barang berhasil disimpan!');
     }
+
 
 
 }

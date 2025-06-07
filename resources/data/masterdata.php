@@ -73,8 +73,8 @@ return array (
   ),
   10 => 
   array (
-    'id_brg' => 'BRG_2870',
-    'nama' => 'Mobile Cable DLC5531CW/70 Type-C to Type-C',
+    'id_brg' => 'BRG_4E55',
+    'nama' => 'Mobile Cable DLC5531CW/70',
     'kategori' => 'Kabel',
     'supplier' => 'Sony',
   ),

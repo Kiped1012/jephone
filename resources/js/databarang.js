@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.querySelector("input[placeholder='Search...']");
     const selectPerPage = document.querySelector("select");
     const showText = document.querySelector("div.text-sm.text-gray-700 > div");
+    const paginationContainer = document.getElementById("pagination");
 
     let currentData = [...rows];
     let currentPage = 1;
@@ -42,6 +43,8 @@ document.addEventListener("DOMContentLoaded", function () {
         info.className = "ml-2 text-gray-500";
         info.textContent = `Menampilkan ${paginatedData.length} dari ${filteredData.length} data`;
         showText.appendChild(info);
+
+        renderPagination(filteredData.length);
     }
 
     // Event: Change items per page
@@ -78,4 +81,41 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Initial render
     renderTable();
+
+    function renderPagination(filteredCount) {
+        paginationContainer.innerHTML = "";
+
+        const totalPages = Math.ceil(filteredCount / perPage);
+
+        const prevButton = document.createElement("button");
+        prevButton.textContent = "<";
+        prevButton.disabled = currentPage === 1;
+        prevButton.className = "px-2 py-1 border rounded disabled:opacity-50";
+        prevButton.addEventListener("click", () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable();
+            }
+        });
+
+        const nextButton = document.createElement("button");
+        nextButton.textContent = ">";
+        nextButton.disabled = currentPage === totalPages;
+        nextButton.className = "px-2 py-1 border rounded disabled:opacity-50";
+        nextButton.addEventListener("click", () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderTable();
+            }
+        });
+
+        const pageInfo = document.createElement("span");
+        pageInfo.textContent = `Hal ${currentPage} dari ${totalPages}`;
+        pageInfo.className = "text-sm";
+
+        paginationContainer.appendChild(prevButton);
+        paginationContainer.appendChild(pageInfo);
+        paginationContainer.appendChild(nextButton);
+    }
+
 });
