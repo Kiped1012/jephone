@@ -26,7 +26,7 @@ return array (
     'id_brg' => 'BRG_E21C',
     'nama' => 'Transistor BC547',
     'kategori' => 'Komponen',
-    'stok' => 1400,
+    'stok' => 1388,
     'harga_beli' => 250,
     'harga_jual' => 400,
     'supplier' => 'Onsemi',

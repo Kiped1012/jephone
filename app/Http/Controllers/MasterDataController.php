@@ -38,15 +38,17 @@ class MasterDataController extends Controller
             'id_brg' => 'BRG_' . strtoupper(substr(md5(uniqid()), 0, 4)),
             'nama' => $request->nama,
             'kategori' => $request->kategori,
-            'stok' => 0,
-            'harga_beli' => 0,
-            'harga_jual' => 0,
             'supplier' => $request->supplier,
         ];
         $data[] = $new;
         $this->writeData($this->pathBarang, $data);
-        return response()->json(['success' => true]);
+
+        return response()->json([
+            'success' => true,
+            'data' => $new
+        ]);
     }
+
 
     public function storeKategori(Request $request)
     {

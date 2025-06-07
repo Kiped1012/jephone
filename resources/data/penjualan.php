@@ -198,4 +198,26 @@ return array (
       ),
     ),
   ),
+  8 => 
+  array (
+    'id' => 'TRX_6843A48CCF57C',
+    'tanggal' => '2025-06-07',
+    'kasir' => 'Hasby',
+    'total_belanja' => 4800,
+    'metode_pembayaran' => 'Tunai',
+    'dibayar_input' => '5000',
+    'kembalian_output' => 'Rp200',
+    'email_pelanggan' => NULL,
+    'jatuh_tempo' => NULL,
+    'items' => 
+    array (
+      0 => 
+      array (
+        'nama' => 'Transistor BC547',
+        'harga' => 400,
+        'jumlah' => 12,
+        'total' => 4800,
+      ),
+    ),
+  ),
 );

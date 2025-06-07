@@ -71,6 +71,9 @@ document.addEventListener('DOMContentLoaded', () => {
             kategoriData.push(nama);
             kategoriData = [...new Set(kategoriData)];
             updateKategoriTable();
+            window.dispatchEvent(new CustomEvent('show-success', {
+                detail: 'Berhasil menyimpan data kategori.'
+            }));
             document.getElementById('namaKategori').value = '';
             document.getElementById('formKategori').classList.add('hidden');
         });
@@ -118,6 +121,9 @@ document.addEventListener('DOMContentLoaded', () => {
             supplierData.push(nama);
             supplierData = [...new Set(supplierData)];
             updateSupplierTable();
+            window.dispatchEvent(new CustomEvent('show-success', {
+                detail: 'Berhasil menyimpan data supplier.'
+            }));
             document.getElementById('namaSupplier').value = '';
             document.getElementById('formSupplier').classList.add('hidden');
         });
@@ -159,12 +165,22 @@ document.addEventListener('DOMContentLoaded', () => {
             body: JSON.stringify({ nama, kategori, supplier })
         })
         .then(res => res.json())
-        .then(() => {
-            const id_brg = barangData.length + 1;
-            barangData.push({ id_brg, nama, kategori, supplier });
-            updateBarangTable();
-            document.getElementById('namaBarang').value = '';
-            document.getElementById('formBarang').classList.add('hidden');
+        .then((res) => {
+            if (res.success && res.data) {
+                barangData.push(res.data); // Ambil data dari response
+                updateBarangTable();
+                window.dispatchEvent(new CustomEvent('show-success', {
+                    detail: 'Berhasil menyimpan data barang.'
+                }));
+                document.getElementById('namaBarang').value = '';
+                document.getElementById('kategoriBarang').value = '';
+                document.getElementById('supplierBarang').value = '';
+                document.getElementById('formBarang').classList.add('hidden');
+            } else {
+                window.dispatchEvent(new CustomEvent('show-error', {
+                    detail: 'Gagal menyimpan barang. Coba lagi.'
+                }));
+            }
         });
     });
 
