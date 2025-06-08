@@ -6,7 +6,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const showText = document.querySelector("div.text-sm.text-gray-700 > div");
     const paginationContainer = document.getElementById("pagination");
 
-    let currentData = [...rows];
+    let originalRows = [...rows]; // Semua data asli dari awal
+    let currentData = [...originalRows];
     let currentPage = 1;
     let perPage = parseInt(selectPerPage.value);
 
@@ -63,21 +64,35 @@ document.addEventListener("DOMContentLoaded", function () {
     // Event: Edit & Delete button (delegated)
     tableBody.addEventListener("click", function (e) {
         const row = e.target.closest("tr");
+        const index = row.getAttribute("data-index"); // penting! pastikan di Blade tiap row punya data-index
         const itemName = row.querySelector("td:nth-child(2)").textContent.trim();
 
         if (e.target.textContent.includes("✏️")) {
-            alert(`Edit data: ${itemName}`);
-            // Redirect / logic edit di sini
+            window.location.href = `/barang/${index}/edit`;
         }
 
         if (e.target.textContent.includes("🗑️")) {
             if (confirm(`Hapus data: ${itemName}?`)) {
-                row.remove();
-                currentData = Array.from(document.querySelectorAll("tbody tr"));
-                renderTable();
+                fetch(`/barang/${index}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        window.dispatchEvent(new CustomEvent('show-success', { detail: data.message }));
+                        originalRows = originalRows.filter(r => r !== row);
+                        currentData = [...originalRows]; // Reset currentData dari originalRows
+                        renderTable();
+                    }
+                });
             }
         }
     });
+
 
     // Initial render
     renderTable();

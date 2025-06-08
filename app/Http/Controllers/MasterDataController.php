@@ -13,7 +13,9 @@ class MasterDataController extends Controller
 
     public function index()
     {
-        return view('masterdata');
+        return view('masterdata', [
+            'title' => 'Master Data'
+        ]);
     }
 
     public function getBarang()

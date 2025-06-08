@@ -14,6 +14,14 @@ document.addEventListener('DOMContentLoaded', () => {
         namaSelect.appendChild(option);
     });
 
+    // Auto-set data jika sedang dalam mode edit
+    if (window.editBarang) {
+        namaSelect.value = window.editBarang.nama;
+        supplierInput.value = window.editBarang.supplier;
+        kategoriInput.value = window.editBarang.kategori;
+        idBarangInput.value = window.editBarang.id_brg;
+    }
+    
     // Saat barang dipilih
     namaSelect.addEventListener('change', function () {
         const selected = window.masterBarang.find(b => b.nama === this.value);

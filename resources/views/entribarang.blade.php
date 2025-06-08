@@ -18,8 +18,9 @@
     </div>
 
     <!-- Form -->
-    <form id="formBarang" action="{{ route('barang.store') }}" method="POST" class="p-6 space-y-6">
+    <form id="formBarang" action="{{ isset($index) ? route('barang.update', $index) : route('barang.store') }}" method="POST" class="p-6 space-y-6">
         @csrf
+        @if(isset($index)) @method('PUT') @endif
 
         <!-- Baris 1 -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -28,11 +29,11 @@
                 <select name="nama" id="namaBarang" class="w-full border border-gray-300 rounded-md px-4 py-2 bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-400" required>
                     <option value="">-- Pilih Barang --</option>
                 </select>
-                <input type="hidden" name="id_brg" id="idBarang">
+                <input type="hidden" name="id_brg" id="idBarang" value="{{ $barang['id_brg'] ?? '' }}">
             </div>
             <div>
                 <label class="block font-semibold mb-1">Supplier</label>
-                <input type="text" name="supplier" id="supplier" class="w-full border border-gray-300 rounded-md px-4 py-2 bg-gray-100" readonly required>
+                <input type="text" name="supplier" id="supplier" class="w-full border border-gray-300 rounded-md px-4 py-2 bg-gray-100" readonly required value="{{ $barang['supplier'] ?? '' }}">
             </div>
         </div>
 
@@ -40,11 +41,11 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-t pt-6">
             <div>
                 <label class="block font-semibold mb-1">Kategori</label>
-                <input type="text" name="kategori" id="kategori" class="w-full border border-gray-300 rounded-md px-4 py-2 bg-gray-100" readonly required>
+                <input type="text" name="kategori" id="kategori" class="w-full border border-gray-300 rounded-md px-4 py-2 bg-gray-100" readonly required value="{{ $barang['kategori'] ?? '' }}">
             </div>
             <div>
                 <label class="block font-semibold mb-1">Stok Terkini</label>
-                <input type="number" name="stok" class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400" required>
+                <input type="number" name="stok" class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400" required value="{{ $barang['stok'] ?? '' }}">
             </div>
         </div>
 
@@ -52,11 +53,11 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
                 <label class="block font-semibold mb-1">Harga Beli</label>
-                <input type="number" name="harga_beli" class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400" required>
+                <input type="number" name="harga_beli" class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400" required value="{{ $barang['harga_beli'] ?? '' }}">
             </div>
             <div>
                 <label class="block font-semibold mb-1">Harga Jual</label>
-                <input type="number" name="harga_jual" class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400" required>
+                <input type="number" name="harga_jual" class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400" required value="{{ $barang['harga_jual'] ?? '' }}">
             </div>
         </div>
 
@@ -70,6 +71,7 @@
 
 <script>
     window.masterBarang = @json(include(resource_path('data/masterdata.php')));
+    window.editBarang = @json($barang ?? null);
 </script>
 
 @vite(['resources/js/entribarang.js'])

@@ -74,6 +74,53 @@ class BarangController extends Controller
         return redirect()->route('barang.index')->with('success', 'Barang berhasil disimpan!');
     }
 
+    public function edit($id)
+    {
+        $barangList = include resource_path('data/barang.php');
+        $index = (int)$id;
 
+        if (!isset($barangList[$index])) {
+            abort(404);
+        }
 
+        return view('entribarang', [
+            'barang' => $barangList[$index],
+            'index' => $index,
+            'title' => 'Edit Barang'
+        ]);
+    }
+
+    public function update(Request $request, $index)
+    {
+        $validated = $request->validate([
+            'id_brg' => 'required|string',
+            'nama' => 'required|string',
+            'kategori' => 'required|string',
+            'supplier' => 'required|string',
+            'stok' => 'required|integer|min:0',
+            'harga_beli' => 'required|integer|min:0',
+            'harga_jual' => 'required|integer|min:0',
+        ]);
+
+        $filePath = resource_path('data/barang.php');
+        $data = include($filePath);
+
+        $data[$index] = $validated;
+
+        file_put_contents($filePath, '<?php return ' . var_export($data, true) . ';');
+
+        return redirect()->route('barang.index')->with('success', 'Data barang berhasil diperbarui!');
+    }
+
+    public function destroy($id)
+    {
+        $filePath = resource_path('data/barang.php');
+        $data = include($filePath);
+
+        array_splice($data, (int)$id, 1);
+
+        file_put_contents($filePath, '<?php return ' . var_export($data, true) . ';');
+
+        return response()->json(['success' => true, 'message' => 'Barang berhasil dihapus!']);
+    }
 }
