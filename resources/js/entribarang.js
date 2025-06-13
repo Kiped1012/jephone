@@ -40,12 +40,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const stok = document.querySelector('[name="stok"]').value.trim();
         const hargaBeli = document.querySelector('[name="harga_beli"]').value.trim();
         const hargaJual = document.querySelector('[name="harga_jual"]').value.trim();
+        const idBarang = document.getElementById('idBarang').value.trim();
 
         if (!stok || !hargaBeli || !hargaJual) {
             e.preventDefault(); // Cegah submit
             window.dispatchEvent(new CustomEvent('show-error', {
                 detail: 'Lengkapi form terlebih dahulu!'
             }));
+        }
+        
+        // Cek duplikasi berdasarkan id_brg (jika bukan edit)
+        if (!window.editBarang) {
+            const isDuplicate = window.masterBarang.some(b => b.id_brg === idBarang);
+            if (isDuplicate) {
+                e.preventDefault();
+                window.dispatchEvent(new CustomEvent('show-error', {
+                    detail: 'Barang dengan ID tersebut sudah terdaftar!'
+                }));
+                return;
+            }
         }
     });
 });

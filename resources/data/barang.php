@@ -6,10 +6,10 @@ return array (
     'id_brg' => 'BRG_A9F2',
     'nama' => 'Resistor 10KΩ',
     'kategori' => 'Komponen',
-    'stok' => 4900,
-    'harga_beli' => 100,
-    'harga_jual' => 150,
     'supplier' => 'YAGEO',
+    'stok' => 900,
+    'harga_beli' => '100',
+    'harga_jual' => '150',
   ),
   1 => 
   array (
@@ -36,10 +36,10 @@ return array (
     'id_brg' => 'BRG_B41E',
     'nama' => 'IC 555 Timer',
     'kategori' => 'IC',
-    'stok' => 790,
-    'harga_beli' => 500,
-    'harga_jual' => 700,
     'supplier' => 'Texas Instruments',
+    'stok' => 700,
+    'harga_beli' => '500',
+    'harga_jual' => '700',
   ),
   4 => 
   array (
@@ -100,5 +100,15 @@ return array (
     'harga_beli' => 100,
     'harga_jual' => 200,
     'supplier' => 'Vishay',
+  ),
+  10 => 
+  array (
+    'id_brg' => 'BRG_4E55',
+    'nama' => 'Mobile Cable DLC5531CW/70',
+    'kategori' => 'Kabel',
+    'supplier' => 'Sony',
+    'stok' => '398',
+    'harga_beli' => '800',
+    'harga_jual' => '900',
   ),
 );

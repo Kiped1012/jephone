@@ -264,4 +264,33 @@ return array (
       ),
     ),
   ),
+  11 => 
+  array (
+    'id' => 'TRX_684BE4D9B6FBE',
+    'tanggal' => '2025-05-20',
+    'kasir' => 'Hasby',
+    'total_belanja' => 8500,
+    'metode_pembayaran' => 'Piutang',
+    'dibayar_input' => NULL,
+    'kembalian_output' => 'Rp0',
+    'email_pelanggan' => 'kifedakevin@gmail.com',
+    'jatuh_tempo' => '2025-06-19',
+    'items' => 
+    array (
+      0 => 
+      array (
+        'nama' => 'Resistor 10KΩ',
+        'harga' => 150,
+        'jumlah' => 10,
+        'total' => 1500,
+      ),
+      1 => 
+      array (
+        'nama' => 'IC 555 Timer',
+        'harga' => 700,
+        'jumlah' => 10,
+        'total' => 7000,
+      ),
+    ),
+  ),
 );

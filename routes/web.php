@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PelunasanController;
 use App\Http\Controllers\MasterDataController;
+use App\Http\Controllers\PurchaseController;
 
 // Arahkan root ke halaman login
 Route::get('/', function () {
@@ -78,6 +79,9 @@ Route::post('/barang', [BarangController::class, 'store'])->name('barang.store')
 
 // Ambil Data User
 Route::get('/manajemen-user', [UserController::class, 'index'])->name('user.index');
+
+Route::get('/pembelian', [PurchaseController::class, 'create'])->name('pembelian.create');
+Route::post('/pembelian', [PurchaseController::class, 'store'])->name('pembelian.store');
 
 // Halaman Penjualan (Kasir)
 Route::get('/penjualan', [OrderController::class, 'create'])->name('penjualan.index');

@@ -87,7 +87,10 @@ document.addEventListener('DOMContentLoaded', () => {
             tr.innerHTML = `
                 <td class="px-4 py-2 border">${nama}</td>
                 <td class="px-4 py-2 border text-center">
-                    <button onclick="hapusKategori('${nama}')" class="text-red-600 hover:underline text-xs">Hapus</button>
+                    <button onclick="hapusKategori('${nama}')" 
+                    class="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold py-1 px-3 rounded-full shadow">
+                        Hapus
+                    </button>
                 </td>
             `;
             tbody.appendChild(tr);
@@ -137,7 +140,10 @@ document.addEventListener('DOMContentLoaded', () => {
             tr.innerHTML = `
                 <td class="px-4 py-2 border">${nama}</td>
                 <td class="px-4 py-2 border text-center">
-                    <button onclick="hapusSupplier('${nama}')" class="text-red-600 hover:underline text-xs">Hapus</button>
+                    <button onclick="hapusSupplier('${nama}')" 
+                    class="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold py-1 px-3 rounded-full shadow">
+                        Hapus
+                    </button>
                 </td>
             `;
             tbody.appendChild(tr);
@@ -153,6 +159,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!nama || !kategori || !supplier) {
             return window.dispatchEvent(new CustomEvent('show-error', {
                 detail: 'Semua field wajib diisi.'
+            }));
+        }
+
+        // Cek duplikasi nama
+        const isDuplicate = barangData.some(b => b.nama.toLowerCase() === nama.toLowerCase());
+        if (isDuplicate) {
+            return window.dispatchEvent(new CustomEvent('show-error', {
+                detail: 'Nama barang sudah terdaftar.'
             }));
         }
 
@@ -195,7 +209,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td class="px-4 py-2 border">${item.kategori}</td>
                 <td class="px-4 py-2 border">${item.supplier}</td>
                 <td class="px-4 py-2 border text-center">
-                    <button onclick="hapusBarang('${item.id_brg}')" class="text-red-600 hover:underline text-xs">Hapus</button>
+                    <button onclick="hapusBarang('${item.id_brg}')" 
+                    class="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold py-1 px-3 rounded-full shadow">
+                        Hapus
+                    </button>
                 </td>
             `;
             tbody.appendChild(tr);

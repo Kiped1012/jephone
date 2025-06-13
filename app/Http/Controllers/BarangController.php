@@ -66,7 +66,7 @@ class BarangController extends Controller
 
         $filePath = resource_path('data/barang.php');
         $data = include($filePath);
-
+        
         $data[] = $barangBaru;
 
         file_put_contents($filePath, '<?php return ' . var_export($data, true) . ';');
