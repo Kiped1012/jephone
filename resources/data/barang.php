@@ -1,10 +1,12 @@
-<?php return array (
+<?php
+
+return array (
   0 => 
   array (
     'id_brg' => 'BRG_A9F2',
     'nama' => 'Resistor 10KΩ',
     'kategori' => 'Komponen',
-    'stok' => 4950,
+    'stok' => 4900,
     'harga_beli' => 100,
     'harga_jual' => 150,
     'supplier' => 'YAGEO',
@@ -14,7 +16,7 @@
     'id_brg' => 'BRG_5D7B',
     'nama' => 'Kapasitor 100uF',
     'kategori' => 'Komponen',
-    'stok' => 2950,
+    'stok' => 2920,
     'harga_beli' => 200,
     'harga_jual' => 300,
     'supplier' => 'Panasonic',
@@ -24,7 +26,7 @@
     'id_brg' => 'BRG_E21C',
     'nama' => 'Transistor BC547',
     'kategori' => 'Komponen',
-    'stok' => 1388,
+    'stok' => 1370,
     'harga_beli' => 250,
     'harga_jual' => 400,
     'supplier' => 'Onsemi',
@@ -44,7 +46,7 @@
     'id_brg' => 'BRG_89D3',
     'nama' => 'LED Merah 5mm',
     'kategori' => 'Komponen',
-    'stok' => 9980,
+    'stok' => 9600,
     'harga_beli' => 50,
     'harga_jual' => 100,
     'supplier' => 'Everlight',
@@ -74,7 +76,7 @@
     'id_brg' => 'BRG_7E4B',
     'nama' => 'Switch Tactile',
     'kategori' => 'Komponen',
-    'stok' => 1980,
+    'stok' => 1960,
     'harga_beli' => 150,
     'harga_jual' => 250,
     'supplier' => 'Omron',
@@ -84,7 +86,7 @@
     'id_brg' => 'BRG_F58A',
     'nama' => 'Konektor USB Female',
     'kategori' => 'Konektor',
-    'stok' => 1130,
+    'stok' => 1120,
     'harga_beli' => 400,
     'harga_jual' => 600,
     'supplier' => 'Foxconn',
@@ -94,7 +96,7 @@
     'id_brg' => 'BRG_3C2D',
     'nama' => 'Diode 1N4007',
     'kategori' => 'Komponen',
-    'stok' => 3455,
+    'stok' => 3450,
     'harga_beli' => 100,
     'harga_jual' => 200,
     'supplier' => 'Vishay',

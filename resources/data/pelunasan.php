@@ -21,4 +21,26 @@
     'dibayar' => '7000',
     'kembalian' => '2500',
   ),
+  2 => 
+  array (
+    'id_transaksi' => 'TRX_683AC3BB2E263',
+    'email' => 'jumin123@gmail.com',
+    'tanggal_piutang' => '2025-05-31',
+    'jatuh_tempo_piutang' => '2025-06-30',
+    'total_piutang' => '19400',
+    'tanggal_pelunasan' => '2025-06-13',
+    'dibayar' => '20000',
+    'kembalian' => '600',
+  ),
+  3 => 
+  array (
+    'id_transaksi' => 'TRX_684BA21D555CD',
+    'email' => 'vindayyy1012@gmail.com',
+    'tanggal_piutang' => '2025-05-06',
+    'jatuh_tempo_piutang' => '2025-06-05',
+    'total_piutang' => '2850',
+    'tanggal_pelunasan' => '2025-06-13',
+    'dibayar' => '3000',
+    'kembalian' => '150',
+  ),
 );

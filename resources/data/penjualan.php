@@ -220,4 +220,48 @@ return array (
       ),
     ),
   ),
+  9 => 
+  array (
+    'id' => 'TRX_684B953CEFF08',
+    'tanggal' => '2025-06-13',
+    'kasir' => 'Hasby',
+    'total_belanja' => 8700,
+    'metode_pembayaran' => 'Tunai',
+    'dibayar_input' => '10000',
+    'kembalian_output' => 'Rp1.300',
+    'email_pelanggan' => NULL,
+    'jatuh_tempo' => NULL,
+    'items' => 
+    array (
+      0 => 
+      array (
+        'nama' => 'Kapasitor 100uF',
+        'harga' => 300,
+        'jumlah' => 29,
+        'total' => 8700,
+      ),
+    ),
+  ),
+  10 => 
+  array (
+    'id' => 'TRX_684BA21D555CD',
+    'tanggal' => '2025-05-06',
+    'kasir' => 'Hasby',
+    'total_belanja' => 2850,
+    'metode_pembayaran' => 'Piutang',
+    'dibayar_input' => NULL,
+    'kembalian_output' => 'Rp0',
+    'email_pelanggan' => 'vindayyy1012@gmail.com',
+    'jatuh_tempo' => '2025-06-05',
+    'items' => 
+    array (
+      0 => 
+      array (
+        'nama' => 'Resistor 10KΩ',
+        'harga' => 150,
+        'jumlah' => 19,
+        'total' => 2850,
+      ),
+    ),
+  ),
 );

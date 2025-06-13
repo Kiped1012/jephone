@@ -41,11 +41,24 @@
 
     document.getElementById('inputItems').value = JSON.stringify(items);
     totalBelanjaInput.value = totalBelanjaDisplay.value.replace(/[^\d]/g, '');
+    document.getElementById('inputTanggal').value = document.getElementById('tanggalTransaksi').value;
     document.getElementById('inputMetode').value = metode;
     document.getElementById('inputDibayar').value = dibayar;
     document.getElementById('inputKembalian').value = document.getElementById('kembalianOutput').value;
     document.getElementById('inputEmail').value = email;
     document.getElementById('inputJatuhTempo').value = document.getElementById('jatuhTempo').value;
+
+    // ⛔ Cek apakah uang cukup SETELAH totalBelanjaInput.value diperbarui
+    const totalBelanja = parseInt(totalBelanjaInput.value.replace(/[^\d]/g, '')) || 0;
+    const kembalian = parseInt(dibayar) - totalBelanja;
+
+    if (metode === 'Tunai' && kembalian < 0) {
+        e.preventDefault();
+        window.dispatchEvent(new CustomEvent('show-error', {
+            detail: "Uang tidak cukup!"
+        }));
+        return;
+    }
 });
 
 
@@ -88,11 +101,13 @@
             const query = searchInput.value.toLowerCase();
             const limit = parseInt(entriesSelect.value);
             let matchCount = 0;
+            let nomorUrut = 1;
 
             tableRows.forEach(row => {
                 const match = row.innerText.toLowerCase().includes(query);
                 if (match && matchCount < limit) {
                     row.style.display = '';
+                    row.querySelector('td:first-child').textContent = nomorUrut++; // Ganti nomor urut
                     matchCount++;
                 } else {
                     row.style.display = 'none';
@@ -212,6 +227,7 @@
         const bayarSection = document.getElementById('bayarSection');
         const piutangFields = document.getElementById('piutangFields');
         const jatuhTempoInput = document.getElementById('jatuhTempo');
+        const tanggalTransaksiInput = document.getElementById('tanggalTransaksi');
 
         function toggleBayarSection() {
             const isTunai = metodeSelect.value === 'Tunai';
@@ -221,18 +237,27 @@
             piutangFields.classList.toggle('hidden', !isPiutang);
 
             if (isPiutang) {
-                // Set jatuh tempo 30 hari dari hari ini
-                const today = new Date();
-                const jatuhTempo = new Date(today.setDate(today.getDate() + 30));
-                jatuhTempoInput.value = jatuhTempo.toISOString().split('T')[0];
+                const tanggalTransaksi = new Date(tanggalTransaksiInput.value);
+                if (!isNaN(tanggalTransaksi.getTime())) {
+                    const jatuhTempo = new Date(tanggalTransaksi);
+                    jatuhTempo.setDate(jatuhTempo.getDate() + 30);
+                    jatuhTempoInput.value = jatuhTempo.toISOString().split('T')[0];
+                } else {
+                    jatuhTempoInput.value = ''; // Kosongkan jika tanggal tidak valid
+                }
             }
         }
 
         metodeSelect.addEventListener('change', toggleBayarSection);
 
+        // ✅ Tambahkan ini agar jatuh tempo ikut berubah saat tanggal transaksi diubah
+        tanggalTransaksiInput.addEventListener('change', toggleBayarSection);
+
         // Panggil saat pertama kali halaman dimuat
         toggleBayarSection();
     });
+
+
     document.addEventListener('DOMContentLoaded', function () {
     const batalBtn = document.querySelector('button.bg-red-500');
     const tbody = document.getElementById('order-body');

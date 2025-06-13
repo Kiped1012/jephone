@@ -66,7 +66,7 @@
             <div class="space-y-4 text-sm">
                 <div>
                     <label class="block mb-1 font-medium">Tanggal Transaksi</label>
-                    <input type="date" value="{{ date('Y-m-d') }}" class="w-full border px-3 py-2 rounded" />
+                    <input type="date" id="tanggalTransaksi" value="{{ date('Y-m-d') }}" class="w-full border px-3 py-2 rounded" />
                 </div>
                 <div>
                     <label class="block mb-1 font-medium">Kasir</label>
@@ -113,7 +113,7 @@
                         @csrf
                         <input type="hidden" name="items" id="inputItems">
                         <input type="hidden" name="kasir" value="{{ session('username') }}">
-                        <input type="hidden" name="tanggal" value="{{ date('Y-m-d') }}">
+                        <input type="hidden" name="tanggal" id="inputTanggal">
                         <input type="hidden" name="total_belanja" id="inputTotalBelanja">
                         <input type="hidden" name="metode_pembayaran" id="inputMetode">
                         <input type="hidden" name="dibayar_input" id="inputDibayar">

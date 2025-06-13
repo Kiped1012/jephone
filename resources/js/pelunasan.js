@@ -134,18 +134,26 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => {
             console.error('Gagal memuat data pelunasan:', error);
         });
+
     // Validasi sebelum submit
     form.addEventListener('submit', function (e) {
         const nilaiDibayar = dibayar.value.trim();
+        const total = parseInt(totalBelanja.value) || 0;
+        const bayar = parseInt(nilaiDibayar) || 0;
 
-        if (nilaiDibayar === '' || isNaN(nilaiDibayar) || parseInt(nilaiDibayar) <= 0) {
-            e.preventDefault(); // Cegah pengiriman form
-
-            // Tampilkan notifikasi error pakai Alpine.js
+        if (nilaiDibayar === '' || isNaN(nilaiDibayar) || bayar <= 0) {
+            e.preventDefault();
             window.dispatchEvent(new CustomEvent('show-error', {
                 detail: 'Lengkapi Data Terlebih Dahulu!'
             }));
+            return false;
+        }
 
+        if (bayar < total) {
+            e.preventDefault();
+            window.dispatchEvent(new CustomEvent('show-error', {
+                detail: 'Uang tidak cukup!'
+            }));
             return false;
         }
     });
