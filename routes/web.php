@@ -19,16 +19,18 @@ Route::get('/login', function () {
     return view('login');
 })->name('login');
 
-// Proses form login (cek username/password)
+// Proses form login (cek username/password) - FIXED VERSION
 Route::post('/login', function (Request $request) {
     $users = include resource_path('data/user.php');
     $username = $request->input('username');
     $password = $request->input('password');
 
     foreach ($users as $user) {
-        if ($user['username'] === $username && $user['password'] === $password) {
+        // Gunakan Hash::check() untuk memverifikasi password yang sudah di-hash
+        if ($user['username'] === $username && Hash::check($password, $user['password'])) {
             Session::put('user_role', $user['role']);
-            Session::put('username', $username); // simpan username ke session
+            Session::put('username', $username);
+            Session::put('user_id', $user['id_usr']); // Simpan juga user ID jika diperlukan
 
             if ($user['role'] === 'Admin') {
                 return redirect()->route('dashboard');
@@ -80,8 +82,15 @@ Route::post('/barang', [BarangController::class, 'store'])->name('barang.store')
 // Ambil Data User
 Route::get('/manajemen-user', [UserController::class, 'index'])->name('user.index');
 
+// Pembelian
 Route::get('/pembelian', [PurchaseController::class, 'create'])->name('pembelian.create');
 Route::post('/pembelian', [PurchaseController::class, 'store'])->name('pembelian.store');
+Route::get('/histori/pembelian', [PurchaseController::class, 'historyPembelian'])->name('histori.pembelian');
+
+// Daftar Piutang
+Route::get('/piutang/daftar', function () {
+    return view('daftarpiutang');
+})->name('piutang.daftar');
 
 // Halaman Penjualan (Kasir)
 Route::get('/penjualan', [OrderController::class, 'create'])->name('penjualan.index');
@@ -102,6 +111,16 @@ Route::get('/pelunasan/get-transaksi', [PelunasanController::class, 'getTransaks
 Route::post('/pelunasan', [PelunasanController::class, 'store'])->name('pelunasan.store');
 
 Route::get('/data/pelunasan', [PelunasanController::class, 'getPelunasan']);
+
+// Manage User
+Route::prefix('user')->group(function () {
+    Route::get('/', [UserController::class, 'index'])->name('user.index');
+    Route::get('/create', [UserController::class, 'create'])->name('user.create');
+    Route::post('/store', [UserController::class, 'store'])->name('user.store');
+    Route::get('/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
+    Route::put('/{id}', [UserController::class, 'update'])->name('user.update');
+    Route::delete('/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+});
 
 // Function log out
 Route::get('/logout', function () {

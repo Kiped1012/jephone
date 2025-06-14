@@ -35,7 +35,7 @@
         <div class="flex-1 bg-white rounded-xl shadow">
             <div class="bg-[#234e9a] px-6 py-4 flex justify-between items-center text-white rounded-t-xl">
                 <div>
-                    <h1 class="text-lg font-semibold">📦 Purchases</h1>
+                    <h1 class="text-lg font-semibold">🛒 Purchases</h1>
                     <p class="text-sm opacity-80">Transaksi / Pembelian</p>
                 </div>
                 <button id="btn-pilih-barang" class="bg-white text-[#234e9a] font-medium px-4 py-2 text-sm rounded hover:bg-gray-100">

@@ -7,7 +7,7 @@ let allData = [];
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Get data from PHP
-    allData = window.penjualanData || [];
+    allData = window.pembelianData || [];
     filteredData = [...allData];
     
     // Setup event listeners
@@ -60,10 +60,9 @@ function filterData(searchTerm) {
 
     filteredData = allData.filter(transaksi => {
         return (
-            transaksi.id.toLowerCase().includes(searchTerm) ||
+            transaksi.id_transaksi.toLowerCase().includes(searchTerm) ||
             transaksi.tanggal.toLowerCase().includes(searchTerm) ||
-            transaksi.kasir.toLowerCase().includes(searchTerm) ||
-            transaksi.metode_pembayaran.toLowerCase().includes(searchTerm) ||
+            transaksi.penanggung_jawab.toLowerCase().includes(searchTerm) ||
             transaksi.total_belanja.toString().includes(searchTerm)
         );
     });
@@ -95,11 +94,10 @@ function renderTable() {
             const row = document.createElement('tr');
             row.className = 'hover:bg-gray-50';
             row.innerHTML = `
-                <td class="px-4 py-2">${transaksi.id}</td>
+                <td class="px-4 py-2">${transaksi.id_transaksi}</td>
                 <td class="px-4 py-2">${transaksi.tanggal}</td>
-                <td class="px-4 py-2">${transaksi.kasir}</td>
+                <td class="px-4 py-2">${transaksi.penanggung_jawab}</td>
                 <td class="px-4 py-2">Rp${formatNumber(transaksi.total_belanja)}</td>
-                <td class="px-4 py-2">${transaksi.metode_pembayaran}</td>
                 <td class="px-4 py-2 text-center">
                     <button onclick="showDetail(${JSON.stringify(transaksi.items).replace(/"/g, '&quot;')})"
                             class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-xs">

@@ -3,11 +3,20 @@ let currentPage = 1;
 let entriesPerPage = 10;
 let filteredData = [];
 let allData = [];
+let pelunasanMap = {};
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Get data from PHP
-    allData = window.penjualanData || [];
+    allData = window.piutangData || [];
+    const pelunasanData = window.pelunasanData || [];
+    
+    // Create pelunasan map for quick lookup
+    pelunasanMap = {};
+    pelunasanData.forEach(item => {
+        pelunasanMap[item.id_transaksi] = item;
+    });
+    
     filteredData = [...allData];
     
     // Setup event listeners
@@ -59,12 +68,16 @@ function filterData(searchTerm) {
     }
 
     filteredData = allData.filter(transaksi => {
+        const isLunas = pelunasanMap[transaksi.id] ? true : false;
+        const status = isLunas ? 'lunas' : 'belum lunas';
+        
         return (
             transaksi.id.toLowerCase().includes(searchTerm) ||
+            transaksi.email_pelanggan.toLowerCase().includes(searchTerm) ||
             transaksi.tanggal.toLowerCase().includes(searchTerm) ||
-            transaksi.kasir.toLowerCase().includes(searchTerm) ||
-            transaksi.metode_pembayaran.toLowerCase().includes(searchTerm) ||
-            transaksi.total_belanja.toString().includes(searchTerm)
+            transaksi.jatuh_tempo.toLowerCase().includes(searchTerm) ||
+            transaksi.total_belanja.toString().includes(searchTerm) ||
+            status.includes(searchTerm)
         );
     });
 }
@@ -92,16 +105,25 @@ function renderTable() {
 
         // Populate table rows
         currentData.forEach(transaksi => {
+            const isLunas = pelunasanMap[transaksi.id] ? true : false;
+            const status = isLunas ? 'Lunas' : 'Belum Lunas';
+            const statusColor = isLunas ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100';
+            
             const row = document.createElement('tr');
             row.className = 'hover:bg-gray-50';
             row.innerHTML = `
                 <td class="px-4 py-2">${transaksi.id}</td>
+                <td class="px-4 py-2">${transaksi.email_pelanggan}</td>
                 <td class="px-4 py-2">${transaksi.tanggal}</td>
-                <td class="px-4 py-2">${transaksi.kasir}</td>
+                <td class="px-4 py-2">${transaksi.jatuh_tempo}</td>
                 <td class="px-4 py-2">Rp${formatNumber(transaksi.total_belanja)}</td>
-                <td class="px-4 py-2">${transaksi.metode_pembayaran}</td>
+                <td class="px-4 py-2">
+                    <span class="px-2 py-1 rounded-full text-xs font-medium ${statusColor}">
+                        ${status}
+                    </span>
+                </td>
                 <td class="px-4 py-2 text-center">
-                    <button onclick="showDetail(${JSON.stringify(transaksi.items).replace(/"/g, '&quot;')})"
+                    <button onclick="showDetail(${JSON.stringify(transaksi).replace(/"/g, '&quot;')})"
                             class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-xs">
                         Detail
                     </button>
@@ -204,16 +226,47 @@ function formatNumber(number) {
 }
 
 // Modal functions
-window.showDetail = function (items) {
-    const tbody = document.getElementById('detail-content');
-    const totalCell = document.getElementById('detail-total');
-    tbody.innerHTML = '';
+window.showDetail = function(data) {
+    // Set info umum
+    document.getElementById('detail-id').textContent = data.id;
+    document.getElementById('detail-email').textContent = data.email_pelanggan;
+    document.getElementById('detail-tanggal').textContent = data.tanggal;
+    document.getElementById('detail-jatuh-tempo').textContent = data.jatuh_tempo;
 
+    // Pelunasan
+    const pelunasan = pelunasanMap[data.id];
+    const tanggalPelunasan = pelunasan ? pelunasan.tanggal_pelunasan : '-';
+    document.getElementById('detail-pelunasan').textContent = tanggalPelunasan;
+
+    // Status Waktu
+    let statusWaktu = 'Belum Lunas';
+    let statusClass = 'text-gray-600 font-semibold';
+    
+    if (tanggalPelunasan !== '-') {
+        const jatuhTempo = new Date(data.jatuh_tempo);
+        const pelunasanDate = new Date(tanggalPelunasan);
+        
+        if (pelunasanDate <= jatuhTempo) {
+            statusWaktu = 'Tepat Waktu';
+            statusClass = 'text-green-600 font-semibold';
+        } else {
+            statusWaktu = 'Terlambat';
+            statusClass = 'text-red-600 font-semibold';
+        }
+    }
+    
+    document.getElementById('detail-status-waktu').textContent = statusWaktu;
+    document.getElementById('detail-status-waktu').className = statusClass;
+
+    // Barang dalam transaksi
+    const barang = data.items || [];
+    const tbody = document.getElementById('detail-content');
+    tbody.innerHTML = '';
     let total = 0;
 
-    items.forEach((item, index) => {
-        const subtotal = item.harga * item.jumlah;
-        total += subtotal;
+    barang.forEach((item, index) => {
+        const rowTotal = item.jumlah * item.harga;
+        total += rowTotal;
 
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -221,17 +274,15 @@ window.showDetail = function (items) {
             <td class="px-3 py-2 border">${item.nama}</td>
             <td class="px-3 py-2 border text-center">${item.jumlah}</td>
             <td class="px-3 py-2 border text-right">Rp${formatNumber(item.harga)}</td>
-            <td class="px-3 py-2 border text-right">Rp${formatNumber(subtotal)}</td>
+            <td class="px-3 py-2 border text-right">Rp${formatNumber(rowTotal)}</td>
         `;
         tbody.appendChild(row);
     });
 
-    totalCell.innerText = `Rp${formatNumber(total)}`;
+    document.getElementById('detail-total').textContent = `Rp${formatNumber(total)}`;
     document.getElementById('modal-detail').classList.remove('hidden');
-    document.getElementById('modal-detail').classList.add('flex');
 };
 
-window.closeModal = function () {
+window.closeModal = function() {
     document.getElementById('modal-detail').classList.add('hidden');
-    document.getElementById('modal-detail').classList.remove('flex');
 };

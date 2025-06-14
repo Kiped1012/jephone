@@ -43,4 +43,15 @@
     'dibayar' => '3000',
     'kembalian' => '150',
   ),
+  4 => 
+  array (
+    'id_transaksi' => 'TRX_683C71BB4C1CD',
+    'email' => 'andiadinata@gmail.com',
+    'tanggal_piutang' => '2025-06-01',
+    'jatuh_tempo_piutang' => '2025-07-01',
+    'total_piutang' => '20000',
+    'tanggal_pelunasan' => '2025-06-14',
+    'dibayar' => '30000',
+    'kembalian' => '10000',
+  ),
 );

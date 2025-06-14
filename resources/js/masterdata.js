@@ -45,14 +45,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // === Simpan Kategori ===
     document.getElementById('simpanKategori').addEventListener('click', () => {
         const nama = document.getElementById('namaKategori').value.trim();
+        const namaLower = nama.toLowerCase();
+        const kategoriLower = kategoriData.map(k => k.toLowerCase());
+
         if (nama === '') {
             return window.dispatchEvent(new CustomEvent('show-error', {
                 detail: 'Nama kategori tidak boleh kosong.'
             }));
         }
-        
-        // Validasi jika kategori sudah ada
-        if (kategoriData.includes(nama)) {
+
+        if (kategoriLower.includes(namaLower)) {
             return window.dispatchEvent(new CustomEvent('show-error', {
                 detail: 'Kategori sudah ada.'
             }));

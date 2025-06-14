@@ -293,4 +293,48 @@ return array (
       ),
     ),
   ),
+  12 => 
+  array (
+    'id' => 'TRX_684CF4C6E188E',
+    'tanggal' => '2025-06-14',
+    'kasir' => 'Hasby',
+    'total_belanja' => 80000,
+    'metode_pembayaran' => 'Tunai',
+    'dibayar_input' => '100000',
+    'kembalian_output' => 'Rp20.000',
+    'email_pelanggan' => NULL,
+    'jatuh_tempo' => '2025-07-14',
+    'items' => 
+    array (
+      0 => 
+      array (
+        'nama' => 'Mobile Cable DLC5531CW/70',
+        'harga' => 800,
+        'jumlah' => 100,
+        'total' => 80000,
+      ),
+    ),
+  ),
+  13 => 
+  array (
+    'id' => 'TRX_684D3E90BE9E0',
+    'tanggal' => '2025-06-14',
+    'kasir' => 'Hasby',
+    'total_belanja' => 4000,
+    'metode_pembayaran' => 'Tunai',
+    'dibayar_input' => '5000',
+    'kembalian_output' => 'Rp1.000',
+    'email_pelanggan' => NULL,
+    'jatuh_tempo' => NULL,
+    'items' => 
+    array (
+      0 => 
+      array (
+        'nama' => 'LED Merah 5mm',
+        'harga' => 100,
+        'jumlah' => 40,
+        'total' => 4000,
+      ),
+    ),
+  ),
 );

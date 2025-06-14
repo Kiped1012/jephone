@@ -5,12 +5,12 @@
     <!-- Header -->
     <div class="bg-[#234e9a] px-6 py-4 flex justify-between items-center text-white rounded-t-xl mb-6">
         <div>
-            <h1 class="text-lg font-semibold">📜 Histori Penjualan</h1>
-            <p class="text-sm opacity-80">Transaksi / Histori Penjualan</p>
+            <h1 class="text-lg font-semibold">📜 Histori Pembelian</h1>
+            <p class="text-sm opacity-80">Transaksi / Histori Pembelian</p>
         </div>
     </div>
 
-    <!-- Tabel Histori Penjualan dengan Controls -->
+    <!-- Tabel Histori Pembelian dengan Controls -->
     <div class="bg-white shadow-md rounded-xl">
         <!-- Controls Section -->
         <div class="p-4 border-b border-gray-200">
@@ -43,9 +43,8 @@
                     <tr>
                         <th class="px-4 py-3 text-left font-semibold text-gray-600">ID Transaksi</th>
                         <th class="px-4 py-3 text-left font-semibold text-gray-600">Tanggal</th>
-                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Kasir</th>
+                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Penanggung Jawab</th>
                         <th class="px-4 py-3 text-left font-semibold text-gray-600">Total Belanja</th>
-                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Metode</th>
                         <th class="px-4 py-3 text-center font-semibold text-gray-600">Aksi</th>
                     </tr>
                 </thead>
@@ -91,7 +90,7 @@
 <div id="modal-detail" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
     <div class="bg-white rounded-xl shadow-lg w-full max-w-2xl p-6 relative">
         <button onclick="closeModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-xl">&times;</button>
-        <h2 class="text-lg font-bold mb-4">Detail Transaksi</h2>
+        <h2 class="text-lg font-bold mb-4">Detail Transaksi Pembelian</h2>
 
         <div class="overflow-x-auto">
             <table class="w-full text-sm text-left border">
@@ -120,9 +119,8 @@
 
 <!-- Hidden data for JavaScript -->
 <script>
-    window.penjualanData = @json(include(resource_path('data/penjualan.php')));
+    window.pembelianData = @json(include(resource_path('data/pembelian.php')));
 </script>
 
-@vite('resources/js/detailhistoripenjualan.js')
-
+@vite('resources/js/detailhistoripembelian.js')
 @endsection

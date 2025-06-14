@@ -5,12 +5,12 @@
     <!-- Header -->
     <div class="bg-[#234e9a] px-6 py-4 flex justify-between items-center text-white rounded-t-xl mb-6">
         <div>
-            <h1 class="text-lg font-semibold">📜 Histori Penjualan</h1>
-            <p class="text-sm opacity-80">Transaksi / Histori Penjualan</p>
+            <h1 class="text-lg font-semibold">📋 Daftar Piutang</h1>
+            <p class="text-sm opacity-80">Transaksi / Daftar Piutang</p>
         </div>
     </div>
 
-    <!-- Tabel Histori Penjualan dengan Controls -->
+    <!-- Tabel Piutang dengan Controls -->
     <div class="bg-white shadow-md rounded-xl">
         <!-- Controls Section -->
         <div class="p-4 border-b border-gray-200">
@@ -30,7 +30,7 @@
                 <!-- Search -->
                 <div class="flex items-center gap-2">
                     <label class="text-sm text-gray-600">Search:</label>
-                    <input type="text" id="search-input" placeholder="Cari transaksi..." 
+                    <input type="text" id="search-input" placeholder="Cari piutang..." 
                            class="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-64">
                 </div>
             </div>
@@ -42,10 +42,11 @@
                 <thead class="bg-gray-100">
                     <tr>
                         <th class="px-4 py-3 text-left font-semibold text-gray-600">ID Transaksi</th>
-                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Tanggal</th>
-                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Kasir</th>
-                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Total Belanja</th>
-                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Metode</th>
+                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Email</th>
+                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Tanggal Piutang</th>
+                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Jatuh Tempo</th>
+                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Total Piutang</th>
+                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Status</th>
                         <th class="px-4 py-3 text-center font-semibold text-gray-600">Aksi</th>
                     </tr>
                 </thead>
@@ -56,7 +57,7 @@
             
             <!-- No Data Message -->
             <div id="no-data" class="text-center py-8 text-gray-500 hidden">
-                <p>Tidak ada data yang sesuai dengan pencarian.</p>
+                <p>Tidak ada data piutang yang sesuai dengan pencarian.</p>
             </div>
         </div>
 
@@ -88,10 +89,19 @@
 </div>
 
 <!-- Modal Detail Transaksi -->
-<div id="modal-detail" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-    <div class="bg-white rounded-xl shadow-lg w-full max-w-2xl p-6 relative">
+<div id="modal-detail" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center min-h-screen">
+    <div class="bg-white rounded-xl shadow-lg w-full max-w-3xl p-6 relative">
         <button onclick="closeModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-xl">&times;</button>
-        <h2 class="text-lg font-bold mb-4">Detail Transaksi</h2>
+        <h2 class="text-lg font-bold mb-4">Detail Transaksi Piutang</h2>
+
+        <div class="grid grid-cols-2 gap-4 text-sm mb-4">
+            <p><strong>ID Transaksi:</strong> <span id="detail-id"></span></p>
+            <p><strong>Email:</strong> <span id="detail-email"></span></p>
+            <p><strong>Tanggal Transaksi:</strong> <span id="detail-tanggal"></span></p>
+            <p><strong>Jatuh Tempo:</strong> <span id="detail-jatuh-tempo"></span></p>
+            <p><strong>Tanggal Pelunasan:</strong> <span id="detail-pelunasan"></span></p>
+            <p><strong>Status Waktu:</strong> <span id="detail-status-waktu" class="font-semibold"></span></p>
+        </div>
 
         <div class="overflow-x-auto">
             <table class="w-full text-sm text-left border">
@@ -120,9 +130,22 @@
 
 <!-- Hidden data for JavaScript -->
 <script>
-    window.penjualanData = @json(include(resource_path('data/penjualan.php')));
+    @php
+        $penjualan = include(resource_path('data/penjualan.php'));
+        $pelunasan = include(resource_path('data/pelunasan.php'));
+        
+        // Filter hanya transaksi piutang
+        $piutangData = array_filter($penjualan, function($trx) {
+            return $trx['metode_pembayaran'] === 'Piutang';
+        });
+        
+        // Convert to array and reindex
+        $piutangData = array_values($piutangData);
+    @endphp
+    
+    window.piutangData = @json($piutangData);
+    window.pelunasanData = @json($pelunasan);
 </script>
 
-@vite('resources/js/detailhistoripenjualan.js')
-
+@vite('resources/js/daftarpiutang.js')
 @endsection

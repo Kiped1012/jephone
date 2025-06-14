@@ -72,6 +72,7 @@
 <script>
     window.masterBarang = @json(include(resource_path('data/masterdata.php')));
     window.editBarang = @json($barang ?? null);
+    window.dataBarangTersimpan = @json(include(resource_path('data/barang.php')));
 </script>
 
 @vite(['resources/js/entribarang.js'])

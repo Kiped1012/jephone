@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
         this.submit();
     });
 
-    // Modal logika
+    // Modal logika dengan pagination
     const modal = document.getElementById('modal-pilih-barang');
     const closeBtn = document.getElementById('btn-close-modal');
     const openBtn = document.getElementById('btn-pilih-barang');
@@ -85,36 +85,198 @@ document.addEventListener('DOMContentLoaded', function () {
     const entriesSelect = document.getElementById('entries-select');
     const tableRows = Array.from(document.querySelectorAll('#barang-table tbody .barang-row'));
 
+    // State untuk pagination
+    let currentPage = 1;
+    let filteredRows = [];
+    let totalPages = 1;
+
     openBtn.addEventListener('click', () => {
+        // Reset search input
         searchInput.value = '';
+        // Reset entries select ke default (misalnya 10)
         entriesSelect.value = '10';
+        // Reset ke halaman pertama
+        currentPage = 1;
+        // Tampilkan modal
         modal.classList.remove('hidden');
+        // Terapkan kembali filter awal
         applySearchAndLimit();
     });
 
     closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
 
-    searchInput.addEventListener('input', applySearchAndLimit);
-    entriesSelect.addEventListener('change', applySearchAndLimit);
+    // Fitur search
+    searchInput.addEventListener('input', () => {
+        currentPage = 1; // Reset ke halaman pertama saat search
+        applySearchAndLimit();
+    });
+
+    entriesSelect.addEventListener('change', () => {
+        currentPage = 1; // Reset ke halaman pertama saat ganti entries
+        applySearchAndLimit();
+    });
 
     function applySearchAndLimit() {
         const query = searchInput.value.toLowerCase();
         const limit = parseInt(entriesSelect.value);
-        let matchCount = 0;
-        let nomor = 1;
 
-        tableRows.forEach(row => {
-            const cocok = row.innerText.toLowerCase().includes(query);
-            if (cocok && matchCount < limit) {
-                row.style.display = '';
-                row.querySelector('td:first-child').textContent = nomor++;
-                matchCount++;
-            } else {
-                row.style.display = 'none';
-            }
+        // Filter rows berdasarkan search query
+        filteredRows = tableRows.filter(row => {
+            return row.innerText.toLowerCase().includes(query);
         });
+
+        // Hitung total halaman
+        totalPages = Math.ceil(filteredRows.length / limit);
+        if (totalPages === 0) totalPages = 1;
+
+        // Pastikan currentPage tidak melebihi totalPages
+        if (currentPage > totalPages) {
+            currentPage = totalPages;
+        }
+
+        // Hitung index start dan end untuk halaman saat ini
+        const startIndex = (currentPage - 1) * limit;
+        const endIndex = startIndex + limit;
+
+        // Sembunyikan semua rows terlebih dahulu
+        tableRows.forEach(row => {
+            row.style.display = 'none';
+        });
+
+        // Tampilkan rows untuk halaman saat ini
+        let nomorUrut = startIndex + 1;
+        filteredRows.slice(startIndex, endIndex).forEach(row => {
+            row.style.display = '';
+            row.querySelector('td:first-child').textContent = nomorUrut++;
+        });
+
+        // Update pagination info dan controls
+        updatePaginationInfo();
+        updatePaginationControls();
     }
 
+    function updatePaginationInfo() {
+        // Cari atau buat element untuk info pagination
+        let paginationInfo = document.getElementById('pagination-info');
+        if (!paginationInfo) {
+            paginationInfo = document.createElement('div');
+            paginationInfo.id = 'pagination-info';
+            paginationInfo.className = 'text-sm text-gray-600 mt-2';
+            
+            // Insert setelah tabel
+            const tableContainer = document.querySelector('#barang-table').parentElement;
+            tableContainer.appendChild(paginationInfo);
+        }
+
+        const limit = parseInt(entriesSelect.value);
+        const startIndex = (currentPage - 1) * limit + 1;
+        const endIndex = Math.min(currentPage * limit, filteredRows.length);
+        
+        paginationInfo.textContent = `Showing ${startIndex} to ${endIndex} of ${filteredRows.length} entries`;
+    }
+
+    function updatePaginationControls() {
+        // Cari atau buat element untuk pagination controls
+        let paginationControls = document.getElementById('pagination-controls');
+        if (!paginationControls) {
+            paginationControls = document.createElement('div');
+            paginationControls.id = 'pagination-controls';
+            paginationControls.className = 'flex justify-center items-center gap-2 mt-4';
+            
+            // Insert setelah info pagination
+            const paginationInfo = document.getElementById('pagination-info');
+            paginationInfo.parentElement.appendChild(paginationControls);
+        }
+
+        // Clear existing controls
+        paginationControls.innerHTML = '';
+
+        // Jika hanya 1 halaman, tidak perlu pagination
+        if (totalPages <= 1) {
+            return;
+        }
+
+        // Previous button
+        const prevBtn = document.createElement('button');
+        prevBtn.textContent = 'Previous';
+        prevBtn.className = `px-3 py-1 text-sm border rounded ${currentPage === 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50'}`;
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                applySearchAndLimit();
+            }
+        });
+        paginationControls.appendChild(prevBtn);
+
+        // Page numbers
+        const maxVisiblePages = 5;
+        let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+        let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+        // Adjust startPage if endPage is at the limit
+        if (endPage - startPage + 1 < maxVisiblePages) {
+            startPage = Math.max(1, endPage - maxVisiblePages + 1);
+        }
+
+        // First page if not visible
+        if (startPage > 1) {
+            const firstBtn = createPageButton(1);
+            paginationControls.appendChild(firstBtn);
+            
+            if (startPage > 2) {
+                const ellipsis = document.createElement('span');
+                ellipsis.textContent = '...';
+                ellipsis.className = 'px-2 py-1 text-sm text-gray-500';
+                paginationControls.appendChild(ellipsis);
+            }
+        }
+
+        // Page number buttons
+        for (let i = startPage; i <= endPage; i++) {
+            const pageBtn = createPageButton(i);
+            paginationControls.appendChild(pageBtn);
+        }
+
+        // Last page if not visible
+        if (endPage < totalPages) {
+            if (endPage < totalPages - 1) {
+                const ellipsis = document.createElement('span');
+                ellipsis.textContent = '...';
+                ellipsis.className = 'px-2 py-1 text-sm text-gray-500';
+                paginationControls.appendChild(ellipsis);
+            }
+            
+            const lastBtn = createPageButton(totalPages);
+            paginationControls.appendChild(lastBtn);
+        }
+
+        // Next button
+        const nextBtn = document.createElement('button');
+        nextBtn.textContent = 'Next';
+        nextBtn.className = `px-3 py-1 text-sm border rounded ${currentPage === totalPages ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50'}`;
+        nextBtn.disabled = currentPage === totalPages;
+        nextBtn.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                applySearchAndLimit();
+            }
+        });
+        paginationControls.appendChild(nextBtn);
+    }
+
+    function createPageButton(pageNumber) {
+        const pageBtn = document.createElement('button');
+        pageBtn.textContent = pageNumber;
+        pageBtn.className = `px-3 py-1 text-sm border rounded ${pageNumber === currentPage ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`;
+        pageBtn.addEventListener('click', () => {
+            currentPage = pageNumber;
+            applySearchAndLimit();
+        });
+        return pageBtn;
+    }
+
+    // Initial load
     entriesSelect.dispatchEvent(new Event('change'));
 
     document.querySelectorAll('.pilih-barang').forEach(button => {

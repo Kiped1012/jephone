@@ -51,11 +51,11 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Cek duplikasi berdasarkan id_brg (jika bukan edit)
         if (!window.editBarang) {
-            const isDuplicate = window.masterBarang.some(b => b.id_brg === idBarang);
+            const isDuplicate = window.dataBarangTersimpan?.some(b => b.id_brg === idBarang);
             if (isDuplicate) {
                 e.preventDefault();
                 window.dispatchEvent(new CustomEvent('show-error', {
-                    detail: 'Barang dengan ID tersebut sudah terdaftar!'
+                    detail: 'Barang dengan ID tersebut sudah tersimpan sebelumnya!'
                 }));
                 return;
             }

@@ -92,4 +92,13 @@ class PurchaseController extends Controller
 
         return redirect()->route('pembelian.create')->with('success', 'Transaksi pembelian berhasil disimpan dan stok ditambah.');
     }
+
+    public function historyPembelian()
+    {
+        $title = 'Histori Pembelian';
+        $pembelianPath = resource_path('data/pembelian.php');
+        $pembelian = file_exists($pembelianPath) ? include $pembelianPath : [];
+
+        return view('historipembelian', compact('pembelian', 'title'));
+    }
 }
