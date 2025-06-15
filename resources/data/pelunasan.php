@@ -54,4 +54,26 @@
     'dibayar' => '30000',
     'kembalian' => '10000',
   ),
+  5 => 
+  array (
+    'id_transaksi' => 'TRX_683AD52A6B7E7',
+    'email' => 'pedrinnn@gmail.com',
+    'tanggal_piutang' => '2025-05-31',
+    'jatuh_tempo_piutang' => '2025-06-30',
+    'total_piutang' => '1000',
+    'tanggal_pelunasan' => '2025-06-15',
+    'dibayar' => '2000',
+    'kembalian' => '1000',
+  ),
+  6 => 
+  array (
+    'id_transaksi' => 'TRX_684E486B956CB',
+    'email' => 'pandra289@gmail.com',
+    'tanggal_piutang' => '2025-02-21',
+    'jatuh_tempo_piutang' => '2025-03-23',
+    'total_piutang' => '24000',
+    'tanggal_pelunasan' => '2025-06-15',
+    'dibayar' => '25000',
+    'kembalian' => '1000',
+  ),
 );

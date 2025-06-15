@@ -12,4 +12,5 @@ return array (
   8 => 'Foxconn',
   9 => 'Vishay',
   10 => 'Sony',
+  11 => 'Pedra',
 );

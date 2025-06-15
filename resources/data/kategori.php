@@ -5,4 +5,5 @@ return array (
   1 => 'IC',
   2 => 'Konektor',
   3 => 'Kabel',
+  4 => 'Memori',
 );

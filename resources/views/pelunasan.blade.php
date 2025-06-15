@@ -24,35 +24,92 @@
 </div>
 
 @section('content')
-<div class="flex-1 p-6 bg-[#f4f6f8] min-h-screen">
-    {{-- Header --}}
-    <div class="bg-[#234e9a] px-6 py-4 flex justify-between items-center text-white rounded-t-xl shadow mb-4">
-        <div>
-            <h1 class="text-lg font-semibold">📄 Pelunasan Piutang</h1>
-            <p class="text-sm opacity-80">Transaksi / Pelunasan Piutang</p>
+<div class="p-6">
+    {{-- Tabel Pelunasan dengan Header Tergabung --}}
+    <div class="bg-white shadow-md rounded-xl">
+        {{-- Header --}}
+        <div class="bg-[#234e9a] px-6 py-4 flex justify-between items-center text-white rounded-t-xl">
+            <div>
+                <h1 class="text-lg font-semibold">📄 Pelunasan Piutang</h1>
+                <p class="text-sm opacity-80">Transaksi / Pelunasan Piutang</p>
+            </div>
+            <button id="btn-pilih-transaksi" class="bg-white text-[#234e9a] font-medium px-4 py-2 text-sm rounded hover:bg-gray-100">
+                Pilih Transaksi
+            </button>
         </div>
-        <button id="btn-pilih-transaksi" class="bg-white text-[#234e9a] font-medium px-4 py-2 text-sm rounded hover:bg-gray-100">
-            Pilih Transaksi
-        </button>
-    </div>
 
-    {{-- Tabel Pelunasan --}}
-    <div class="bg-white p-6 rounded-xl shadow overflow-x-auto">
-        <table class="w-full text-sm text-left border border-gray-200">
-            <thead class="bg-gray-100 text-gray-700">
-                <tr>
-                    <th class="px-4 py-3 border">No</th>
-                    <th class="px-4 py-3 border">ID Transaksi</th>
-                    <th class="px-4 py-3 border">Tanggal Transaksi</th>
-                    <th class="px-4 py-3 border">Jatuh Tempo</th>
-                    <th class="px-4 py-3 border">Tanggal Pelunasan</th>
-                    <th class="px-4 py-3 border">Status</th>
-                </tr>
-            </thead>
-            <tbody id="pelunasan-body" class="text-gray-800">
-               
-            </tbody>
-        </table>
+        {{-- Controls Section --}}
+        <div class="p-4 border-b border-gray-200">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                {{-- Show Entries --}}
+                <div class="flex items-center gap-2">
+                    <label class="text-sm text-gray-600">Show</label>
+                    <select id="entries-select" class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <label class="text-sm text-gray-600">entries</label>
+                </div>
+
+                {{-- Search --}}
+                <div class="flex items-center gap-2">
+                    <label class="text-sm text-gray-600">Search:</label>
+                    <input type="text" id="search-input" placeholder="Cari pelunasan..." 
+                           class="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-64">
+                </div>
+            </div>
+        </div>
+
+        {{-- Table --}}
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 text-sm">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="px-4 py-3 text-left font-semibold text-gray-600">No</th>
+                        <th class="px-4 py-3 text-left font-semibold text-gray-600">ID Transaksi</th>
+                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Tanggal Transaksi</th>
+                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Jatuh Tempo</th>
+                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Tanggal Pelunasan</th>
+                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Status</th>
+                    </tr>
+                </thead>
+                <tbody id="pelunasan-body" class="divide-y divide-gray-200">
+                    {{-- Data akan diisi oleh JavaScript --}}
+                </tbody>
+            </table>
+            
+            {{-- No Data Message --}}
+            <div id="no-data" class="text-center py-8 text-gray-500 hidden">
+                <p>Tidak ada data pelunasan yang sesuai dengan pencarian.</p>
+            </div>
+        </div>
+
+        {{-- Pagination and Info --}}
+        <div class="p-4 border-t border-gray-200">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                {{-- Info --}}
+                <div class="text-sm text-gray-600">
+                    <span id="info-text">Showing 0 to 0 of 0 entries</span>
+                </div>
+
+                {{-- Pagination --}}
+                <div class="flex items-center gap-2">
+                    <button id="prev-btn" class="px-3 py-2 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                        Previous
+                    </button>
+                    
+                    <div id="pagination-numbers" class="flex gap-1">
+                        {{-- Page numbers akan diisi oleh JavaScript --}}
+                    </div>
+                    
+                    <button id="next-btn" class="px-3 py-2 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                        Next
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -69,7 +126,7 @@
         <div class="flex flex-col lg:flex-row justify-between mb-4 gap-4">
             <div>
                 <label class="text-sm font-medium mr-2">Show</label>
-                <select id="entries-select" class="border px-2 py-1 rounded text-sm">
+                <select id="modal-entries-select" class="border px-2 py-1 rounded text-sm">
                     <option value="5">5</option>
                     <option value="10" selected>10</option>
                     <option value="25">25</option>

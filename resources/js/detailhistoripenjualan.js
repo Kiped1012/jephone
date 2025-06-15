@@ -8,6 +8,7 @@ let allData = [];
 document.addEventListener('DOMContentLoaded', function() {
     // Get data from PHP
     allData = window.penjualanData || [];
+    allData.sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
     filteredData = [...allData];
     
     // Setup event listeners

@@ -78,4 +78,11 @@ return array (
     'kategori' => 'Kabel',
     'supplier' => 'Sony',
   ),
+  11 => 
+  array (
+    'id_brg' => 'BRG_156F',
+    'nama' => 'RAM 12 GB PEDRA',
+    'kategori' => 'Memori',
+    'supplier' => 'Pedra',
+  ),
 );

@@ -337,4 +337,48 @@ return array (
       ),
     ),
   ),
+  14 => 
+  array (
+    'id' => 'TRX_684E402A30E7E',
+    'tanggal' => '2025-06-15',
+    'kasir' => 'Hasby',
+    'total_belanja' => 12000,
+    'metode_pembayaran' => 'Tunai',
+    'dibayar_input' => '20000',
+    'kembalian_output' => 'Rp8.000',
+    'email_pelanggan' => NULL,
+    'jatuh_tempo' => NULL,
+    'items' => 
+    array (
+      0 => 
+      array (
+        'nama' => 'Konektor USB Female',
+        'harga' => 600,
+        'jumlah' => 20,
+        'total' => 12000,
+      ),
+    ),
+  ),
+  15 => 
+  array (
+    'id' => 'TRX_684E486B956CB',
+    'tanggal' => '2025-02-21',
+    'kasir' => 'Hasby',
+    'total_belanja' => 24000,
+    'metode_pembayaran' => 'Piutang',
+    'dibayar_input' => NULL,
+    'kembalian_output' => 'Rp0',
+    'email_pelanggan' => 'pandra289@gmail.com',
+    'jatuh_tempo' => '2025-03-23',
+    'items' => 
+    array (
+      0 => 
+      array (
+        'nama' => 'Mobile Cable DLC5531CW/70',
+        'harga' => 800,
+        'jumlah' => 30,
+        'total' => 24000,
+      ),
+    ),
+  ),
 );

@@ -6,12 +6,88 @@ document.addEventListener("DOMContentLoaded", function () {
     const showText = document.querySelector("div.text-sm.text-gray-700 > div");
     const paginationContainer = document.getElementById("pagination");
 
+    // Sorting variables
+    let currentSort = { column: 'nama', direction: 'asc' }; // Default sort by nama A-Z
+    const sortableColumns = {
+        'nama': 1,     // index kolom nama
+        'kategori': 2, // index kolom kategori  
+        'supplier': 6  // index kolom supplier
+    };
+
     let originalRows = [...rows]; // Semua data asli dari awal
     let currentData = [...originalRows];
     let currentPage = 1;
     let perPage = parseInt(selectPerPage.value);
     let totalPages = 1;
     let filteredData = [];
+
+    // Initialize sorting - sort by nama A-Z on load
+    function initializeSorting() {
+        sortData('nama', 'asc');
+        updateSortIndicators();
+    }
+
+    function sortData(column, direction) {
+        const columnIndex = sortableColumns[column];
+        
+        currentData.sort((a, b) => {
+            const aValue = a.querySelectorAll("td")[columnIndex].textContent.trim().toLowerCase();
+            const bValue = b.querySelectorAll("td")[columnIndex].textContent.trim().toLowerCase();
+            
+            if (direction === 'asc') {
+                return aValue.localeCompare(bValue);
+            } else {
+                return bValue.localeCompare(aValue);
+            }
+        });
+        
+        currentSort = { column, direction };
+    }
+
+    function updateSortIndicators() {
+        // Remove all existing sort indicators
+        document.querySelectorAll('.sort-indicator').forEach(indicator => {
+            indicator.remove();
+        });
+        
+        // Add sort indicators to headers
+        Object.keys(sortableColumns).forEach(column => {
+            const headerCell = document.querySelector(`th:nth-child(${sortableColumns[column] + 1})`);
+            if (headerCell) {
+                headerCell.style.cursor = 'pointer';
+                headerCell.style.userSelect = 'none';
+                headerCell.style.position = 'relative';
+                
+                // Add sort indicator
+                const indicator = document.createElement('span');
+                indicator.className = 'sort-indicator ml-1';
+                indicator.style.fontSize = '12px';
+                indicator.style.color = '#6b7280';
+                
+                if (currentSort.column === column) {
+                    indicator.textContent = currentSort.direction === 'asc' ? '↑' : '↓';
+                    indicator.style.color = '#3b82f6';
+                } else {
+                    indicator.textContent = '↕';
+                }
+                
+                headerCell.appendChild(indicator);
+                
+                // Add click event for sorting
+                headerCell.onclick = () => {
+                    let newDirection = 'asc';
+                    if (currentSort.column === column && currentSort.direction === 'asc') {
+                        newDirection = 'desc';
+                    }
+                    
+                    sortData(column, newDirection);
+                    updateSortIndicators();
+                    currentPage = 1; // Reset to first page after sorting
+                    renderTable();
+                };
+            }
+        });
+    }
 
     function renderTable() {
         // Clear tbody
@@ -195,7 +271,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         
                         // Remove row from original data
                         originalRows = originalRows.filter(r => r !== row);
-                        currentData = [...originalRows]; // Reset currentData dari originalRows
+                        currentData = [...originalRows];
+                        
+                        // Re-apply current sorting after deletion
+                        sortData(currentSort.column, currentSort.direction);
                         
                         // Jika halaman saat ini kosong setelah delete, pindah ke halaman sebelumnya
                         const newFilteredData = currentData.filter((row) => {
@@ -224,6 +303,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Initial render
+    // Initialize everything
+    initializeSorting();
     renderTable();
 });

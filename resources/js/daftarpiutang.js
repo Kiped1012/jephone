@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', function() {
         pelunasanMap[item.id_transaksi] = item;
     });
     
+    // Sort data by tanggal (newest first) as default
+    allData = sortDataByDate(allData);
     filteredData = [...allData];
     
     // Setup event listeners
@@ -25,6 +27,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initial render
     renderTable();
 });
+
+// Function to sort data by date
+function sortDataByDate(data) {
+    return data.sort((a, b) => {
+        // Convert date strings to Date objects for proper comparison
+        const dateA = new Date(a.tanggal);
+        const dateB = new Date(b.tanggal);
+        
+        // Sort in descending order (newest first)
+        return dateB - dateA;
+    });
+}
 
 function setupEventListeners() {
     // Entries per page selector
@@ -80,6 +94,9 @@ function filterData(searchTerm) {
             status.includes(searchTerm)
         );
     });
+    
+    // Keep the same sorting after filtering
+    filteredData = sortDataByDate(filteredData);
 }
 
 function renderTable() {

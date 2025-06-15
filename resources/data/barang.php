@@ -1,6 +1,4 @@
-<?php
-
-return array (
+<?php return array (
   0 => 
   array (
     'id_brg' => 'BRG_A9F2',
@@ -106,9 +104,19 @@ return array (
     'id_brg' => 'BRG_4E55',
     'nama' => 'Mobile Cable DLC5531CW/70',
     'kategori' => 'Kabel',
-    'stok' => '500',
+    'stok' => 500,
     'harga_beli' => '500',
     'harga_jual' => '800',
     'supplier' => 'Sony',
+  ),
+  11 => 
+  array (
+    'id_brg' => 'BRG_156F',
+    'nama' => 'RAM 12 GB PEDRA',
+    'kategori' => 'Memori',
+    'stok' => '300',
+    'harga_beli' => '300',
+    'harga_jual' => '450',
+    'supplier' => 'Pedra',
   ),
 );

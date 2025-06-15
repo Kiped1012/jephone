@@ -91,4 +91,30 @@ return array (
     'dibayar' => '10000',
     'kembalian' => '2500',
   ),
+  4 => 
+  array (
+    'id_transaksi' => 'PB_684E450ECDA1A',
+    'tanggal' => '2025-06-15',
+    'penanggung_jawab' => 'Kiped',
+    'items' => 
+    array (
+      0 => 
+      array (
+        'nama' => 'Konektor USB Female',
+        'harga' => 400,
+        'jumlah' => 20,
+        'total' => 8000,
+      ),
+      1 => 
+      array (
+        'nama' => 'Mobile Cable DLC5531CW/70',
+        'harga' => 500,
+        'jumlah' => 30,
+        'total' => 15000,
+      ),
+    ),
+    'total_belanja' => '23000',
+    'dibayar' => '40000',
+    'kembalian' => '17000',
+  ),
 );

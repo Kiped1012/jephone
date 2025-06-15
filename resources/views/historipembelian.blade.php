@@ -2,16 +2,16 @@
 
 @section('content')
 <div class="p-6">
-    <!-- Header -->
-    <div class="bg-[#234e9a] px-6 py-4 flex justify-between items-center text-white rounded-t-xl mb-6">
-        <div>
-            <h1 class="text-lg font-semibold">📜 Histori Pembelian</h1>
-            <p class="text-sm opacity-80">Transaksi / Histori Pembelian</p>
-        </div>
-    </div>
-
-    <!-- Tabel Histori Pembelian dengan Controls -->
+    <!-- Tabel Histori Pembelian dengan Header Tergabung -->
     <div class="bg-white shadow-md rounded-xl">
+        <!-- Header -->
+        <div class="bg-[#234e9a] px-6 py-4 flex justify-between items-center text-white rounded-t-xl">
+            <div>
+                <h1 class="text-lg font-semibold">📜 Histori Pembelian</h1>
+                <p class="text-sm opacity-80">Transaksi / Histori Pembelian</p>
+            </div>
+        </div>
+
         <!-- Controls Section -->
         <div class="p-4 border-b border-gray-200">
             <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
@@ -123,4 +123,5 @@
 </script>
 
 @vite('resources/js/detailhistoripembelian.js')
+
 @endsection
