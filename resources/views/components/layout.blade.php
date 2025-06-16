@@ -12,7 +12,7 @@
     <div class="flex h-screen">
         {{-- Sidebar tetap (sticky) --}}
         <div class="w-64 bg-blue-100 flex flex-col justify-between h-screen fixed left-0 top-0">
-            @if(session('user_role') === 'Admin')
+            @if(session('role') === 'Admin')
                 @include('components.sidebaradmin')
             @else
                 @include('components.sidebarkasir')

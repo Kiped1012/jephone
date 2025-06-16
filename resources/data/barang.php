@@ -116,9 +116,19 @@ return array (
     'id_brg' => 'BRG_156F',
     'nama' => 'RAM 12 GB PEDRA',
     'kategori' => 'Memori',
-    'stok' => '300',
+    'stok' => 255,
     'harga_beli' => '300',
     'harga_jual' => '450',
     'supplier' => 'Pedra',
+  ),
+  12 => 
+  array (
+    'id_brg' => 'BRG_0E20',
+    'nama' => 'Layar LCD Samsung',
+    'kategori' => 'Layar',
+    'stok' => 245,
+    'harga_beli' => '300',
+    'harga_jual' => '600',
+    'supplier' => 'Samsung',
   ),
 );

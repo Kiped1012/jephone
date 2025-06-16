@@ -8,45 +8,35 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PelunasanController;
 use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\AuthController;
+
+// Login routes
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+
+// Forgot Password routes
+Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('forgot.password');
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->name('forgot.password.submit');
+
+// Reset Password routes
+Route::get('/reset-password/{token}', [AuthController::class, 'showResetPassword'])->name('reset.password');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('reset.password.submit');
+
+// Logout route
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Dashboard route (example - protected route)
+Route::get('/dashboard', function () {
+    if (!session('user_id')) {
+        return redirect()->route('login');
+    }
+    return view('dashboard');
+})->name('dashboard');
 
 // Arahkan root ke halaman login
 Route::get('/', function () {
     return redirect()->route('login');
 });
-
-// Halaman login
-Route::get('/login', function () {
-    return view('login');
-})->name('login');
-
-// Proses form login (cek username/password) - FIXED VERSION
-Route::post('/login', function (Request $request) {
-    $users = include resource_path('data/user.php');
-    $username = $request->input('username');
-    $password = $request->input('password');
-
-    foreach ($users as $user) {
-        // Gunakan Hash::check() untuk memverifikasi password yang sudah di-hash
-        if ($user['username'] === $username && Hash::check($password, $user['password'])) {
-            Session::put('user_role', $user['role']);
-            Session::put('username', $username);
-            Session::put('user_id', $user['id_usr']); // Simpan juga user ID jika diperlukan
-
-            if ($user['role'] === 'Admin') {
-                return redirect()->route('dashboard');
-            } elseif ($user['role'] === 'Kasir') {
-                return redirect()->route('penjualan.index');
-            }
-        }
-    }
-
-    return redirect()->route('login')->with('error', 'Username atau password salah.');
-})->name('login.submit');
-
-// Halaman dashboard setelah login berhasil
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
 
 // Ambil Data Barang
 Route::get('/barang', [BarangController::class, 'index'])->name('barang.index');

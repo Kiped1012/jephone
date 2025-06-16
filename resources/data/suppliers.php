@@ -13,4 +13,5 @@ return array (
   9 => 'Vishay',
   10 => 'Sony',
   11 => 'Pedra',
+  12 => 'Samsung',
 );

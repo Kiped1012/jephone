@@ -13,7 +13,7 @@
     'username' => 'Kiped',
     'email' => 'kifedakevin@gmail.com',
     'role' => 'Admin',
-    'password' => '$2y$12$5qeHM1hlvcSy8CBvhKiihOtLk9QxbdG8SoAruKQkYeK0RleNzq5fm',
+    'password' => '$2y$12$7FWdsT7nLkAsro9igG85R.dUdJCLtwozUuVMthMQqmY3nQKxsMXoi',
   ),
   2 => 
   array (
@@ -30,5 +30,13 @@
     'email' => 'sonyadiabel@gmail.com',
     'role' => 'Admin',
     'password' => '$2y$12$xZBW9D/0z8Enrirl5hC7qeZSx5UY/V/opeAqm0WwdHNP886KrTo/y',
+  ),
+  4 => 
+  array (
+    'id_usr' => 'USR_WVJN',
+    'username' => 'Sinta',
+    'email' => 'sintamarsanda@gmail.com',
+    'role' => 'Kasir',
+    'password' => '$2y$12$LrMECP1Yb.YMxCr0e4hh2.lMIx3OhqT8QJbu7xq/5yk.LA7eE3y6u',
   ),
 );

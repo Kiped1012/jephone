@@ -6,4 +6,5 @@ return array (
   2 => 'Konektor',
   3 => 'Kabel',
   4 => 'Memori',
+  5 => 'Layar',
 );

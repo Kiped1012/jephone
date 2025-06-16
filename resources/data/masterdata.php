@@ -85,4 +85,11 @@ return array (
     'kategori' => 'Memori',
     'supplier' => 'Pedra',
   ),
+  12 => 
+  array (
+    'id_brg' => 'BRG_0E20',
+    'nama' => 'Layar LCD Samsung',
+    'kategori' => 'Layar',
+    'supplier' => 'Samsung',
+  ),
 );

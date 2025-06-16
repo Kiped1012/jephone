@@ -76,4 +76,15 @@
     'dibayar' => '25000',
     'kembalian' => '1000',
   ),
+  7 => 
+  array (
+    'id_transaksi' => 'TRX_684BE4D9B6FBE',
+    'email' => 'kifedakevin@gmail.com',
+    'tanggal_piutang' => '2025-05-20',
+    'jatuh_tempo_piutang' => '2025-06-19',
+    'total_piutang' => '8500',
+    'tanggal_pelunasan' => '2025-06-16',
+    'dibayar' => '10000',
+    'kembalian' => '1500',
+  ),
 );

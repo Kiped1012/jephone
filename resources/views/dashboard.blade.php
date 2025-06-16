@@ -1,5 +1,17 @@
 @extends('components.layout')
-
+@if (session('success'))
+    <div 
+        x-data="{ show: true }"
+        x-show="show"
+        x-init="setTimeout(() => show = false, 3000)"
+        class="fixed right-4 top-4 z-50 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg shadow-md max-w-sm w-full"
+    >
+        <div class="flex justify-between items-center">
+            <span class="text-sm">{{ session('success') }}</span>
+            <button @click="show = false" class="ml-4 text-green-700 hover:text-green-900 font-bold">&times;</button>
+        </div>
+    </div>
+@endif
 @section('content')
 <div class="min-h-screen bg-gradient-to-br from-[#234e9a] to-blue-800 p-6 rounded-lg">
     <div class="max-w-7xl mx-auto">

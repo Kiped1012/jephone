@@ -60,7 +60,7 @@
                             </button>
                         </div>
                         <div class="text-right text-sm text-red-500 mt-1">
-                            <a href="#">Lupa Kata Sandi</a>
+                            <a href="{{ route('forgot.password') }}">Lupa Kata Sandi</a>
                         </div>
                     </div>
                     <button type="submit" class="bg-[#2d4a8a] hover:bg-[#1e3366] text-white w-full py-2 rounded-lg font-medium shadow-md transition">

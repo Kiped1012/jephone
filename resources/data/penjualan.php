@@ -381,4 +381,33 @@ return array (
       ),
     ),
   ),
+  16 => 
+  array (
+    'id' => 'TRX_6850408370276',
+    'tanggal' => '2025-06-16',
+    'kasir' => 'Sinta',
+    'total_belanja' => 32250,
+    'metode_pembayaran' => 'Piutang',
+    'dibayar_input' => NULL,
+    'kembalian_output' => 'Rp0',
+    'email_pelanggan' => 'childeajax@gmail.com',
+    'jatuh_tempo' => '2025-07-16',
+    'items' => 
+    array (
+      0 => 
+      array (
+        'nama' => 'Layar LCD Samsung',
+        'harga' => 600,
+        'jumlah' => 20,
+        'total' => 12000,
+      ),
+      1 => 
+      array (
+        'nama' => 'RAM 12 GB PEDRA',
+        'harga' => 450,
+        'jumlah' => 45,
+        'total' => 20250,
+      ),
+    ),
+  ),
 );

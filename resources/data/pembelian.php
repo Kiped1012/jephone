@@ -136,4 +136,23 @@ return array (
     'dibayar' => '4000',
     'kembalian' => '1000',
   ),
+  6 => 
+  array (
+    'id_transaksi' => 'PB_68503F90A5F94',
+    'tanggal' => '2025-06-16',
+    'penanggung_jawab' => 'Kiped',
+    'items' => 
+    array (
+      0 => 
+      array (
+        'nama' => 'Layar LCD Samsung',
+        'harga' => 300,
+        'jumlah' => 15,
+        'total' => 4500,
+      ),
+    ),
+    'total_belanja' => '4500',
+    'dibayar' => '5000',
+    'kembalian' => '500',
+  ),
 );
