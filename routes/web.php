@@ -92,6 +92,16 @@ Route::get('/piutang/daftar', function () {
     return view('daftarpiutang');
 })->name('piutang.daftar');
 
+// Route untuk laporan stok
+Route::get('/laporan-stok', function () {
+    return view('laporanstok');
+})->name('laporan.stok');
+
+// Route untuk laporan arus kas
+Route::get('/laporan-arus-kas', function () {
+    return view('laporanaruskas');
+})->name('laporan.aruskas');
+
 // Halaman Penjualan (Kasir)
 Route::get('/penjualan', [OrderController::class, 'create'])->name('penjualan.index');
 

@@ -1,4 +1,6 @@
-<?php return array (
+<?php
+
+return array (
   0 => 
   array (
     'id_brg' => 'BRG_A9F2',
@@ -74,7 +76,7 @@
     'id_brg' => 'BRG_7E4B',
     'nama' => 'Switch Tactile',
     'kategori' => 'Komponen',
-    'stok' => 1960,
+    'stok' => 1980,
     'harga_beli' => 150,
     'harga_jual' => 250,
     'supplier' => 'Omron',

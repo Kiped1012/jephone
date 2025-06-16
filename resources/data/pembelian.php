@@ -117,4 +117,23 @@ return array (
     'dibayar' => '40000',
     'kembalian' => '17000',
   ),
+  5 => 
+  array (
+    'id_transaksi' => 'PB_684FF32107476',
+    'tanggal' => '2025-06-16',
+    'penanggung_jawab' => 'Kiped',
+    'items' => 
+    array (
+      0 => 
+      array (
+        'nama' => 'Switch Tactile',
+        'harga' => 150,
+        'jumlah' => 20,
+        'total' => 3000,
+      ),
+    ),
+    'total_belanja' => '3000',
+    'dibayar' => '4000',
+    'kembalian' => '1000',
+  ),
 );
