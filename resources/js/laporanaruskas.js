@@ -422,6 +422,187 @@ function updateChart(transactions) {
     });
 }
 
+// Export Functions
+function showLoading() {
+    document.getElementById('loadingModal').classList.remove('hidden');
+}
+
+function hideLoading() {
+    document.getElementById('loadingModal').classList.add('hidden');
+}
+
+function getPeriodText() {
+    const selectedMonth = document.getElementById('filterMonth').value;
+    const selectedYear = document.getElementById('filterYear').value;
+    
+    if (selectedMonth && selectedYear) {
+        const monthNames = [
+            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+        return `${monthNames[parseInt(selectedMonth) - 1]} ${selectedYear}`;
+    } else if (selectedYear) {
+        return `Tahun ${selectedYear}`;
+    } else if (selectedMonth) {
+        const monthNames = [
+            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+        return `Bulan ${monthNames[parseInt(selectedMonth) - 1]}`;
+    }
+    return 'Semua Periode';
+}
+
+function exportToExcel() {
+    showLoading();
+    
+    try {
+        // Get current filtered data
+        const searchedTransactions = searchTransactions(filteredTransactions, searchQuery);
+        
+        // Calculate summary
+        const totalKasMasuk = filteredTransactions.reduce((sum, t) => sum + t.kasmasuk, 0);
+        const totalKasKeluar = filteredTransactions.reduce((sum, t) => sum + t.kaskeluar, 0);
+        const saldoAkhir = totalKasMasuk - totalKasKeluar;
+        
+        // Create workbook
+        const wb = XLSX.utils.book_new();
+        
+        // Summary data
+        const summaryData = [
+            ['LAPORAN ARUS KAS'],
+            [`Periode: ${getPeriodText()}`],
+            [`Dicetak pada: ${new Date().toLocaleDateString('id-ID')} ${new Date().toLocaleTimeString('id-ID')}`],
+            [],
+            ['RINGKASAN'],
+            ['Total Kas Masuk', totalKasMasuk],
+            ['Total Kas Keluar', totalKasKeluar],
+            ['Saldo Akhir', saldoAkhir],
+            [],
+            ['DETAIL TRANSAKSI'],
+            ['Tanggal', 'Jenis', 'ID Transaksi', 'Keterangan', 'Kas Masuk', 'Kas Keluar', 'Saldo']
+        ];
+        
+        // Add transaction data
+        searchedTransactions.forEach(transaction => {
+            summaryData.push([
+                new Date(transaction.tanggal).toLocaleDateString('id-ID'),
+                transaction.jenis,
+                transaction.id,
+                transaction.keterangan,
+                transaction.kasmasuk || 0,
+                transaction.kaskeluar || 0,
+                transaction.saldo
+            ]);
+        });
+        
+        // Create worksheet
+        const ws = XLSX.utils.aoa_to_sheet(summaryData);
+        
+        // Set column widths
+        ws['!cols'] = [
+            { width: 12 }, // Tanggal
+            { width: 18 }, // Jenis
+            { width: 15 }, // ID Transaksi
+            { width: 25 }, // Keterangan
+            { width: 15 }, // Kas Masuk
+            { width: 15 }, // Kas Keluar
+            { width: 15 }  // Saldo
+        ];
+        
+        // Add worksheet to workbook
+        XLSX.utils.book_append_sheet(wb, ws, 'Arus Kas');
+        
+        // Generate filename
+        const filename = `Laporan_Arus_Kas_${getPeriodText().replace(/\s+/g, '_')}_${new Date().getTime()}.xlsx`;
+        
+        // Save file
+        XLSX.writeFile(wb, filename);
+        
+    } catch (error) {
+        console.error('Error exporting to Excel:', error);
+        alert('Terjadi kesalahan saat mengekspor ke Excel');
+    } finally {
+        hideLoading();
+    }
+}
+
+function exportToPDF() {
+    showLoading();
+    
+    try {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        // Get current filtered data
+        const searchedTransactions = searchTransactions(filteredTransactions, searchQuery);
+        
+        // Calculate summary
+        const totalKasMasuk = filteredTransactions.reduce((sum, t) => sum + t.kasmasuk, 0);
+        const totalKasKeluar = filteredTransactions.reduce((sum, t) => sum + t.kaskeluar, 0);
+        const saldoAkhir = totalKasMasuk - totalKasKeluar;
+        
+        // Header
+        doc.setFontSize(16);
+        doc.text('⚖️ LAPORAN ARUS KAS', 105, 20, { align: 'center' });
+        
+        doc.setFontSize(10);
+        doc.text(`Periode: ${getPeriodText()}`, 105, 30, { align: 'center' });
+        doc.text(`Dicetak pada: ${new Date().toLocaleDateString('id-ID')} ${new Date().toLocaleTimeString('id-ID')}`, 105, 35, { align: 'center' });
+        
+        // Summary
+        doc.setFontSize(12);
+        doc.text('RINGKASAN', 20, 50);
+        
+        doc.setFontSize(10);
+        doc.text(`Total Kas Masuk: ${formatCurrency(totalKasMasuk)}`, 20, 60);
+        doc.text(`Total Kas Keluar: ${formatCurrency(totalKasKeluar)}`, 20, 67);
+        doc.text(`Saldo Akhir: ${formatCurrency(saldoAkhir)}`, 20, 74);
+        
+        // Table data
+        const tableData = searchedTransactions.map(transaction => [
+            new Date(transaction.tanggal).toLocaleDateString('id-ID'),
+            transaction.jenis,
+            transaction.id,
+            transaction.keterangan,
+            transaction.kasmasuk > 0 ? formatCurrency(transaction.kasmasuk) : '-',
+            transaction.kaskeluar > 0 ? formatCurrency(transaction.kaskeluar) : '-',
+            formatCurrency(transaction.saldo)
+        ]);
+        
+        // Add table
+        doc.autoTable({
+            head: [['Tanggal', 'Jenis', 'ID', 'Keterangan', 'Kas Masuk', 'Kas Keluar', 'Saldo']],
+            body: tableData,
+            startY: 85,
+            styles: { fontSize: 8 },
+            headStyles: { fillColor: [66, 139, 202] },
+            columnStyles: {
+                0: { cellWidth: 20 }, // Tanggal
+                1: { cellWidth: 25 }, // Jenis
+                2: { cellWidth: 15 }, // ID
+                3: { cellWidth: 35 }, // Keterangan
+                4: { cellWidth: 25, halign: 'right' }, // Kas Masuk
+                5: { cellWidth: 25, halign: 'right' }, // Kas Keluar
+                6: { cellWidth: 25, halign: 'right' }  // Saldo
+            }
+        });
+        
+        // Generate filename
+        const filename = `Laporan_Arus_Kas_${getPeriodText().replace(/\s+/g, '_')}_${new Date().getTime()}.pdf`;
+        
+        // Save file
+        doc.save(filename);
+        
+    } catch (error) {
+        console.error('Error exporting to PDF:', error);
+        alert('Terjadi kesalahan saat mengekspor ke PDF');
+    } finally {
+        hideLoading();
+    }
+}
+
+
 // Main update function
 function updateReport() {
     const selectedMonth = document.getElementById('filterMonth').value;
@@ -486,6 +667,10 @@ function initApp() {
     // Event listeners for pagination
     document.getElementById('prevPage').addEventListener('click', handlePrevPage);
     document.getElementById('nextPage').addEventListener('click', handleNextPage);
+    
+    // Event listeners for export functions
+    document.getElementById('exportExcel').addEventListener('click', exportToExcel);
+    document.getElementById('exportPDF').addEventListener('click', exportToPDF);
     
     // Process data dan update report
     processTransactions();

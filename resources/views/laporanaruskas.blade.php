@@ -109,7 +109,24 @@
 
         <!-- Detailed Table -->
         <div class="px-6 py-4 border-t border-gray-200">
-            <h2 class="text-lg font-semibold text-gray-800 mb-4">Detail Arus Kas</h2>
+            <!-- Header with Export/Print buttons -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+                <h2 class="text-lg font-semibold text-gray-800">Detail Arus Kas</h2>
+                <div class="flex flex-wrap gap-2">
+                    <button id="exportExcel" class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Export Excel
+                    </button>
+                    <button id="exportPDF" class="inline-flex items-center px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        </svg>
+                        Export PDF
+                    </button>
+                </div>
+            </div>
             
             <!-- Table Controls -->
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
@@ -130,7 +147,7 @@
             </div>
 
             <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
+                <table class="min-w-full divide-y divide-gray-200" id="cashFlowTable">
                     <thead class="bg-gray-50">
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
@@ -170,7 +187,117 @@
     </div>
 </div>
 
+<!-- Print Modal/Template (Hidden) -->
+<div id="printTemplate" class="hidden">
+    <div class="print-content">
+        <div class="print-header text-center mb-6">
+            <h1 class="text-2xl font-bold mb-2">⚖️ LAPORAN ARUS KAS</h1>
+            <p class="text-sm text-gray-600" id="printPeriod">Periode: -</p>
+            <p class="text-sm text-gray-600" id="printDate">Dicetak pada: {{ now()->setTimezone('Asia/Jakarta')->format('d/m/Y H:i') }}</p>
+        </div>
+        
+        <div class="print-summary mb-6">
+            <div class="grid grid-cols-3 gap-4 text-center">
+                <div class="border p-3 rounded">
+                    <p class="font-semibold text-green-600">Total Kas Masuk</p>
+                    <p class="text-lg font-bold" id="printTotalKasMasuk">Rp 0</p>
+                </div>
+                <div class="border p-3 rounded">
+                    <p class="font-semibold text-red-600">Total Kas Keluar</p>
+                    <p class="text-lg font-bold" id="printTotalKasKeluar">Rp 0</p>
+                </div>
+                <div class="border p-3 rounded">
+                    <p class="font-semibold text-blue-600">Saldo Akhir</p>
+                    <p class="text-lg font-bold" id="printSaldoAkhir">Rp 0</p>
+                </div>
+            </div>
+        </div>
+        
+        <table class="w-full border-collapse border border-gray-300 text-sm">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="border border-gray-300 px-3 py-2 text-left">Tanggal</th>
+                    <th class="border border-gray-300 px-3 py-2 text-left">Jenis</th>
+                    <th class="border border-gray-300 px-3 py-2 text-left">ID Transaksi</th>
+                    <th class="border border-gray-300 px-3 py-2 text-left">Keterangan</th>
+                    <th class="border border-gray-300 px-3 py-2 text-right">Kas Masuk</th>
+                    <th class="border border-gray-300 px-3 py-2 text-right">Kas Keluar</th>
+                    <th class="border border-gray-300 px-3 py-2 text-right">Saldo</th>
+                </tr>
+            </thead>
+            <tbody id="printTableBody">
+                <!-- Data akan diisi oleh JavaScript -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Loading Modal -->
+<div id="loadingModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg p-6 flex items-center space-x-3">
+        <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+        <span class="text-gray-700">Memproses...</span>
+    </div>
+</div>
+
+<!-- CDN untuk Export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    
+    .print-content, .print-content * {
+        visibility: visible;
+    }
+    
+    .print-content {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+    
+    .print-header {
+        margin-bottom: 20px;
+    }
+    
+    .print-summary {
+        margin-bottom: 20px;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+    }
+    
+    th, td {
+        border: 1px solid #000;
+        padding: 5px;
+        text-align: left;
+    }
+    
+    th {
+        background-color: #f0f0f0;
+        font-weight: bold;
+    }
+    
+    .text-right {
+        text-align: right;
+    }
+    
+    .text-center {
+        text-align: center;
+    }
+}
+</style>
+
 <script>
     // Inject data ke JavaScript
     document.addEventListener('DOMContentLoaded', function() {

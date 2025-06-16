@@ -334,7 +334,7 @@
                 <div>
                     <h3 class="text-lg font-semibold text-gray-800">Ringkasan Aktivitas</h3>
                     <p class="text-sm text-gray-600 mt-1">
-                        Update terakhir: <?= date('d F Y, H:i') ?>
+                        Update terakhir: <span id="live-time"><?= date('d F Y, H:i') ?></span> WIB
                     </p>
                 </div>
                 <div class="mt-4 md:mt-0 flex space-x-4">
@@ -357,6 +357,34 @@
 </div>
 
 <script>
+// Atur zona ke WIB (UTC+7)
+    const wibOffset = 7 * 60; // menit
+
+    function updateTime() {
+        const now = new Date();
+
+        // UTC waktu lokal + offset WIB
+        const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+        const wib = new Date(utc + (wibOffset * 60000));
+
+        // Format: 16 Juni 2025, 19:45
+        const options = { 
+            day: '2-digit', 
+            month: 'long', 
+            year: 'numeric', 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: false 
+        };
+        const formatted = wib.toLocaleString('id-ID', options);
+
+        document.getElementById('live-time').textContent = formatted;
+    }
+
+    // Update langsung dan setiap detik
+    updateTime();
+    setInterval(updateTime, 1000);
+    
 // Data untuk pagination AJAX
 const barangData = <?= json_encode($barang) ?>;
 const itemsPerPage = <?= $items_per_page ?>;

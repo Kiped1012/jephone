@@ -160,9 +160,6 @@
                         <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm" onclick="exportToExcel()">
                             <i class="fas fa-file-excel mr-2"></i>Export Excel
                         </button>
-                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm" onclick="printReport()">
-                            <i class="fas fa-print mr-2"></i>Print
-                        </button>
                     </div>
                 </div>
             </div>
