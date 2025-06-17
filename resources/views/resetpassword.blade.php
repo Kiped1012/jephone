@@ -45,9 +45,9 @@
                         <label class="block text-sm font-medium mb-1">Password Baru</label>
                         <div class="relative">
                             <input type="password" name="password" placeholder="Masukkan password baru" required
-                                   id="password" minlength="8"
+                                   id="new_password" minlength="8"
                                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
-                            <button type="button" id="togglePassword" class="absolute right-3 top-3 text-gray-400">
+                            <button type="button" id="toggleNewPassword" class="absolute right-3 top-3 text-gray-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -65,9 +65,9 @@
                         <label class="block text-sm font-medium mb-1">Konfirmasi Password Baru</label>
                         <div class="relative">
                             <input type="password" name="password_confirmation" placeholder="Konfirmasi password baru" required
-                                   id="password_confirmation" minlength="8"
+                                   id="confirm_password" minlength="8"
                                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
-                            <button type="button" id="togglePasswordConfirmation" class="absolute right-3 top-3 text-gray-400">
+                            <button type="button" id="toggleConfirmPassword" class="absolute right-3 top-3 text-gray-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -97,19 +97,25 @@
     </div>
 
     <script>
-        // Toggle password visibility
-        document.getElementById('togglePassword').addEventListener('click', function() {
-            const password = document.getElementById('password');
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-            password.setAttribute('type', type);
+        const toggleNewPassword = document.getElementById('toggleNewPassword');
+        const newPasswordInput = document.getElementById('new_password');
+
+        toggleNewPassword.addEventListener('click', function() {
+            const isPassword = newPasswordInput.type === 'password';
+            newPasswordInput.type = isPassword ? 'text' : 'password';
+            this.classList.toggle('text-green-500', isPassword);
         });
 
-        document.getElementById('togglePasswordConfirmation').addEventListener('click', function() {
-            const password = document.getElementById('password_confirmation');
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-            password.setAttribute('type', type);
+        const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+        const confirmPasswordInput = document.getElementById('confirm_password');
+
+        toggleConfirmPassword.addEventListener('click', function() {
+            const isPassword = confirmPasswordInput.type === 'password';
+            confirmPasswordInput.type = isPassword ? 'text' : 'password';
+            this.classList.toggle('text-green-500', isPassword);
         });
     </script>
+
 
 </body>
 </html>

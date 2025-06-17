@@ -1,4 +1,6 @@
-<?php return array (
+<?php
+
+return array (
   0 => 
   array (
     'id_usr' => 'USR_EPOW',
@@ -13,7 +15,7 @@
     'username' => 'Kiped',
     'email' => 'kifedakevin@gmail.com',
     'role' => 'Admin',
-    'password' => '$2y$12$7FWdsT7nLkAsro9igG85R.dUdJCLtwozUuVMthMQqmY3nQKxsMXoi',
+    'password' => '$2y$12$Xz4N1zaa2Mk/unYnP3xdH.QiG8VwVaCnYYQ14EJh0o6qbUwqOFPEe',
   ),
   2 => 
   array (
