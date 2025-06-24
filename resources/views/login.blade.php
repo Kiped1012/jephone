@@ -22,7 +22,7 @@
 
             <!-- Kanan -->
             <div class="w-1/2 p-10">
-                <h2 class="text-gray-800 text-lg">Selamat Datang! test</h2>
+                <h2 class="text-gray-800 text-lg">Selamat Datang!</h2>
                 <h1 class="text-4xl font-extrabold mb-6">Login</h1>
 
                 @if (session('error'))
